@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /beheer
+Disallow: /api/
+Sitemap: https://www.cycle-service.nl/sitemap.xml

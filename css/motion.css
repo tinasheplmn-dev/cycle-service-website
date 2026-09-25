@@ -1,0 +1,416 @@
+/* ==========================================================================
+   motion.css: de motion- en dieptelaag voor elke site.
+   Hoort bij assets/motion.js. Kopieer beide naar de site en laad motion.css
+   na tokens.css (het gebruikt --vlot, --komop en --duur uit tokens.css,
+   met eigen terugvalwaarden als die er niet zijn).
+
+   Uitgangspunten, in deze volgorde:
+   1. Fail-open. Verbergen gebeurt ALLEEN achter html.js:not(.klaar).
+      Zonder JavaScript, met ?foto=1, of zodra het script opgeeft (.klaar)
+      staat alles gewoon zichtbaar.
+   2. Reduced motion zet alles uit: reveals, zweven, parallax, kantelen.
+   3. Beweging dient de inhoud. Reveals tot 600 ms, toestandswissels
+      150 tot 300 ms. Niets hindert het lezen of klikken.
+
+   Klassen en attributen (Nederlands, in lijn met tokens.css):
+     [data-rev]            sectie of blok komt omhoog zweven bij scrollen
+                           (.in = in beeld, .af = reveal afgerond, gezet door JS)
+     [data-rev="links"]    komt van links (met lichte skew, Kickstart)
+     [data-rev="rechts"]   komt van rechts
+     [data-rev="schaal"]   groeit zacht van 96% naar 100%
+     [data-rev="gordijn"]  gordijn-wipe van boven naar beneden (Bazen)
+     [data-rev="kantel"]   kantelt vanuit het vlak naar je toe (3D)
+     [data-rev="lijn"]     een lijn die zich van links naar rechts tekent
+     [data-stagger]        kinderen komen na elkaar (JS zet --i per kind)
+     [data-hero]           hero-opening: [data-hero-item] kinderen na elkaar
+     .zweef                zweeft continu op en neer (beeldkaders, badges)
+     .diepte               gelaagde schaduw die een zwevend vlak suggereert
+     .diepte-kader         beeldkader met verschoven achtervlak
+     .diepte-laag          badge of kaart die over een beeld heen zweeft
+     [data-kantel]         3D-kantel op hover (JS zet --rx en --ry)
+     [data-parallax]       muis-parallax: kinderen met --laag bewegen mee
+     [data-sectie-p]       JS zet --sectie-p (0 tot 1) terwijl je scrolt
+     .parallax-scroll      beeld verschuift op --sectie-p
+     .scroll-balk          voortgangsbalk bovenin op --scroll
+     .plak                 blijft plakken (sticky) terwijl de rest scrolt
+     .lift                 hover-lift van 4 px met diepere schaduw
+     .knop-vul             knop waarvan de vulling omhoogschuift bij hover
+     .streep               link met onderstreep die uitrolt bij hover
+     .loper                lopende tekstband
+   ========================================================================== */
+
+:root {
+  --vlot: cubic-bezier(.22, 1, .36, 1);        /* zachte uitloop, geen overshoot */
+  --kick: cubic-bezier(.22, 1.1, .32, 1);      /* lichte overshoot, voor launch-effecten */
+  --gordijn: cubic-bezier(.65, 0, .2, 1);      /* traag in, vlot uit; voor wipes */
+  --komop: 28px;                               /* afstand van een reveal omhoog */
+  --rev-duur: .6s;                             /* duur van een reveal, maximaal */
+  --rev-duur-op: .45s;                         /* opacity mag korter dan transform */
+  --stap: 70ms;                                /* stagger tussen kinderen */
+  --duur: .22s;                                /* toestandswissel */
+
+  /* schaduwen die diepte suggereren: drie lagen, altijd zacht en laag in alpha */
+  --schaduw-1: 0 1px 2px rgba(0, 0, 0, .04), 0 8px 24px rgba(0, 0, 0, .06);
+  --schaduw-2: 0 2px 4px rgba(0, 0, 0, .05), 0 18px 44px rgba(0, 0, 0, .10);
+  --schaduw-3: 0 4px 8px rgba(0, 0, 0, .06), 0 30px 70px rgba(0, 0, 0, .16);
+}
+
+/* ---------------------------------------------------------------
+   1. Reveals bij scrollen (fail-open)
+   Verbergen alleen zolang: JS draait (html.js), het script niet heeft
+   opgegeven (:not(.klaar)) en het element nog niet in beeld is (:not(.in)).
+
+   Reveals gebruiken de losse eigenschappen translate en scale, niet
+   transform. Zo botsen ze nooit met transform van [data-kantel],
+   [data-laag] of .stapel op hetzelfde element. Na afloop zet het
+   script .af (afgerond) en vervalt de reveal-transitie, zodat hover-
+   effecten daarna hun eigen, korte transitie terugkrijgen.
+   --------------------------------------------------------------- */
+html.js [data-rev]:not(.af),
+html.js [data-stagger]:not(.af) > *,
+html.js [data-hero]:not(.af) [data-hero-item] {
+  transition:
+    opacity   var(--rev-duur-op) var(--vlot)    var(--vertraging, var(--d, 0s)),
+    translate var(--rev-duur)    var(--vlot)    var(--vertraging, var(--d, 0s)),
+    scale     var(--rev-duur)    var(--vlot)    var(--vertraging, var(--d, 0s)),
+    transform var(--rev-duur)    var(--vlot)    var(--vertraging, var(--d, 0s)),
+    clip-path var(--rev-duur)    var(--gordijn) var(--vertraging, var(--d, 0s));
+}
+
+html.js:not(.klaar) [data-rev]:not(.in) {
+  opacity: 0;
+  translate: 0 var(--komop);
+}
+html.js:not(.klaar) [data-rev="links"]:not(.in) {
+  translate: calc(var(--komop) * -1.4) 0;
+  transform: skewX(-3deg);
+}
+html.js:not(.klaar) [data-rev="rechts"]:not(.in) {
+  translate: calc(var(--komop) * 1.4) 0;
+  transform: skewX(3deg);
+}
+html.js:not(.klaar) [data-rev="schaal"]:not(.in) {
+  translate: 0 calc(var(--komop) * .5);
+  scale: .96;
+}
+html.js:not(.klaar) [data-rev="gordijn"]:not(.in) {
+  opacity: 1;                                  /* de wipe doet het werk, niet opacity */
+  translate: none;
+  clip-path: inset(0 0 100% 0);
+}
+html.js [data-rev="gordijn"] { clip-path: inset(0 0 0 0); }
+
+html.js:not(.klaar) [data-rev="kantel"]:not(.in) {
+  transform: perspective(900px) rotateX(10deg);
+  transform-origin: 50% 100%;
+}
+html.js [data-rev="kantel"].in { transform: perspective(900px) rotateX(0); }
+
+/* lijn die zich tekent: geef het element zelf een height en achtergrond */
+html.js [data-rev="lijn"] { transform-origin: 0 50%; }
+html.js:not(.klaar) [data-rev="lijn"]:not(.in) {
+  opacity: 1;
+  translate: none;
+  scale: 0 1;
+}
+
+/* ---------------------------------------------------------------
+   2. Stagger tussen kinderen
+   Zet data-rev EN data-stagger op de ouder. De ouder zelf blijft
+   staan; de kinderen komen een voor een. JS zet --i op elk kind.
+   De vertraging is gemaximeerd op 8 stappen, anders wacht een lange
+   lijst secondenlang. Eigen stapgrootte: style="--stap: 90ms".
+   --------------------------------------------------------------- */
+html.js [data-rev][data-stagger] { opacity: 1; translate: none; transition: none; }
+html.js [data-stagger] > * {
+  --vertraging: calc(var(--d, 0s) + min(var(--i, 0), 8) * var(--stap));
+}
+html.js:not(.klaar) [data-stagger]:not(.in) > * {
+  opacity: 0;
+  translate: 0 var(--komop);
+}
+html.js:not(.klaar) [data-stagger="schaal"]:not(.in) > * {
+  translate: 0 calc(var(--komop) * .5);
+  scale: .96;
+}
+
+/* ---------------------------------------------------------------
+   3. Hero-opening
+   Alles staat direct in de HTML. Het script zet .in binnen twee
+   frames (en hoe dan ook na 400 ms). De items komen na elkaar op,
+   90 ms uit elkaar; het beeld zoomt heel licht uit (Ken Burns, licht).
+   --------------------------------------------------------------- */
+html.js [data-hero] [data-hero-item] {
+  --vertraging: calc(var(--i, 0) * 90ms);
+  --rev-duur: .7s;
+  --rev-duur-op: .5s;
+}
+html.js:not(.klaar) [data-hero]:not(.in) [data-hero-item] {
+  opacity: 0;
+  translate: 0 22px;
+}
+html.js [data-hero].in [data-hero-beeld] {
+  animation: hero-beeld 9s var(--vlot) both;
+}
+@keyframes hero-beeld {
+  from { scale: 1.06; }
+  to   { scale: 1; }
+}
+
+/* crossfade van meerdere hero-beelden (Max): het script wisselt .aan */
+[data-hero-dia] {
+  position: absolute; inset: 0;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+[data-hero-dia].aan { opacity: 1; }
+
+/* ---------------------------------------------------------------
+   4. Zweven: continu, langzaam, klein
+   Voor beeldkaders, badges, losse kaarten naast een foto. Nooit voor
+   tekst. Meerdere zwevers: geef elk een eigen fase via --zweef-fase
+   (of laat motion.js dat doen met data-zweef).
+   --------------------------------------------------------------- */
+.zweef {
+  animation: zweef var(--zweef-duur, 6s) ease-in-out var(--zweef-fase, 0s) infinite alternate;
+  will-change: transform;
+}
+.zweef-klein { --zweef-afstand: -6px; }
+.zweef-groot { --zweef-afstand: -14px; --zweef-duur: 7.5s; }
+@keyframes zweef {
+  from { translate: 0 0; rotate: 0deg; }
+  to   { translate: 0 var(--zweef-afstand, -10px); rotate: var(--zweef-draai, 0deg); }
+}
+
+/* ---------------------------------------------------------------
+   5. Diepte zonder beweging
+   Dit is wat Max "verbluffend" maakt: vlakken die over elkaar heen
+   liggen, met een schaduw die laag in alpha is en ver uitloopt.
+   --------------------------------------------------------------- */
+.diepte   { box-shadow: var(--schaduw-2); }
+.diepte-1 { box-shadow: var(--schaduw-1); }
+.diepte-3 { box-shadow: var(--schaduw-3); }
+
+/* beeldkader met een verschoven achtervlak in de merkkleur (Kickstart .profiel) */
+.diepte-kader { position: relative; }
+.diepte-kader::before {
+  content: "";
+  position: absolute;
+  inset: 14px -14px -14px 14px;
+  border: 2px solid var(--merk, currentColor);
+  border-radius: inherit;
+  z-index: -1;
+  pointer-events: none;
+}
+
+/* badge of kaart die over de rand van een beeld heen zweeft (Max: 1.200+ geslaagd) */
+.diepte-laag {
+  position: absolute;
+  top: -2.5rem; right: -1.5rem;
+  padding: 2rem 2.5rem;
+  background: color-mix(in srgb, var(--papier, #fff) 95%, transparent);
+  border-radius: var(--radius-groot, 2rem);
+  box-shadow: var(--schaduw-3);
+  transition: scale .5s var(--vlot), box-shadow .5s var(--vlot);
+}
+@supports (backdrop-filter: blur(4px)) {
+  .diepte-laag { backdrop-filter: blur(8px); }
+}
+.diepte-laag:hover { scale: 1.06; }
+
+/* ---------------------------------------------------------------
+   6. 3D-kantel op hover (alleen met muis; motion.js zet --rx en --ry)
+   Maximaal 6 graden. De glans volgt de muis. Zonder JS: niets.
+   --------------------------------------------------------------- */
+[data-kantel] {
+  transform: perspective(900px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateZ(0);
+  transition: transform .45s var(--vlot), box-shadow .45s var(--vlot);
+  will-change: transform;
+}
+[data-kantel].kantelt { transition: transform .08s linear, box-shadow .45s var(--vlot); }
+[data-kantel].kantelt.diepte { box-shadow: var(--schaduw-3); }
+[data-kantel] > .kantel-glans {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: radial-gradient(circle at var(--gx, 50%) var(--gy, 50%), rgba(255, 255, 255, .22), transparent 60%);
+  opacity: 0;
+  transition: opacity .3s ease;
+  pointer-events: none;
+}
+[data-kantel].kantelt > .kantel-glans { opacity: 1; }
+
+/* ---------------------------------------------------------------
+   7. Muis-parallax in lagen (motion.js zet --mx en --my van -1 tot 1)
+   Elke laag krijgt --laag: het aantal pixels dat hij per eenheid
+   meebeweegt. Achtergrond 6, midden 12, voorgrond 20. Negatief mag.
+   --------------------------------------------------------------- */
+[data-parallax] [data-laag] {
+  transform: translate3d(
+    calc(var(--mx, 0) * var(--laag, 10) * 1px),
+    calc(var(--my, 0) * var(--laag, 10) * 1px),
+    0);
+  transition: transform .12s linear;
+  will-change: transform;
+}
+
+/* ---------------------------------------------------------------
+   8. Scroll-gekoppeld: --scroll (pagina) en --sectie-p (per element)
+   --------------------------------------------------------------- */
+.scroll-balk {
+  position: fixed; top: 0; left: 0; right: 0;
+  height: 3px;
+  z-index: 300;
+  background: var(--merk, currentColor);
+  transform: scaleX(var(--scroll, 0));
+  transform-origin: 0 50%;
+  pointer-events: none;
+}
+
+/* foto verschuift terwijl de sectie voorbij komt. De scale verbergt de
+   randen. --plx is de totale afstand; standaard 40 px. */
+.parallax-scroll { overflow: hidden; }
+.parallax-scroll > img,
+.parallax-scroll > picture,
+.parallax-scroll > video {
+  transform: translate3d(0, calc((var(--sectie-p, .5) - .5) * -1 * var(--plx, 40px)), 0) scale(1.1);
+  will-change: transform;
+}
+
+/* twee stroken die tegen elkaar in schuiven (Bazen filmstroken) */
+.strook { display: flex; gap: 1rem; width: max-content; will-change: transform; }
+.strook:nth-child(odd)  { transform: translate3d(calc((var(--sectie-p, .5) - .5) * -1 * var(--strook, 240px)), 0, 0); }
+.strook:nth-child(even) { transform: translate3d(calc((var(--sectie-p, .5) - .5) *  1 * var(--strook, 240px)), 0, 0); }
+
+/* sticky element naast een lange kolom (Bazen traject) */
+.plak { position: sticky; top: var(--plak-top, 96px); }
+
+/* stapelende kaarten: elke kaart plakt en de vorige zakt iets weg */
+.stapel > * {
+  position: sticky;
+  top: var(--plak-top, 96px);
+  transform: scale(calc(1 - var(--sectie-p, 0) * .04));
+  transform-origin: 50% 0;
+}
+
+/* ---------------------------------------------------------------
+   9. Hover en micro-interacties
+   --------------------------------------------------------------- */
+.lift {
+  transition: translate var(--duur) var(--vlot), box-shadow var(--duur) var(--vlot);
+}
+.lift:hover, .lift:focus-within {
+  translate: 0 -4px;
+  box-shadow: var(--schaduw-2);
+}
+.lift-zacht { transition: translate .45s var(--vlot), box-shadow .45s var(--vlot); }
+.lift-zacht:hover { translate: 0 -8px; box-shadow: var(--schaduw-3); }
+
+/* beeld in een kaart zoomt licht mee */
+.lift img, .lift-zacht img { transition: transform .5s var(--vlot); }
+.lift:hover img, .lift-zacht:hover img { transform: scale(1.04); }
+
+/* zwart-wit dat kleur krijgt bij hover (Bazen) */
+.kleur-terug img { filter: grayscale(.85) brightness(.9); transition: filter .5s ease, transform .6s var(--vlot); }
+.kleur-terug:hover img { filter: none; transform: scale(1.04); }
+
+/* knop: vulling schuift van onder omhoog (Bazen .btn::before) */
+.knop-vul { position: relative; overflow: hidden; isolation: isolate; }
+.knop-vul::before {
+  content: "";
+  position: absolute; inset: 0;
+  background: var(--merk-diep, rgba(0, 0, 0, .12));
+  transform: translateY(101%);
+  transition: transform .3s var(--gordijn);
+  z-index: -1;
+}
+.knop-vul:hover::before, .knop-vul:focus-visible::before { transform: translateY(0); }
+.knop-vul:active { transform: scale(.97); }
+
+/* pijl in een knop schuift 4 px mee */
+.knop .pijl { display: inline-block; transition: transform var(--duur) var(--vlot); }
+.knop:hover .pijl { transform: translateX(4px); }
+
+/* onderstreep die uitrolt (Kickstart, Bazen) */
+.streep { position: relative; }
+.streep::after {
+  content: "";
+  position: absolute; left: 0; right: 0; bottom: -2px;
+  height: 2px;
+  background: var(--merk, currentColor);
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform .25s var(--vlot);
+}
+.streep:hover::after, .streep[aria-current="page"]::after { transform: scaleX(1); }
+
+/* pulserende ring achter een zwevende WhatsApp- of belknop (Max) */
+.puls { position: relative; }
+.puls::before {
+  content: "";
+  position: absolute; inset: 0;
+  border-radius: inherit;
+  background: currentColor;
+  opacity: .25;
+  animation: puls 1.6s cubic-bezier(0, 0, .2, 1) infinite;
+  z-index: -1;
+}
+@keyframes puls {
+  75%, 100% { transform: scale(1.9); opacity: 0; }
+}
+
+/* ---------------------------------------------------------------
+   10. Loper (Kickstart ticker, Bazen marquee)
+   Zet de inhoud twee keer achter elkaar in .loper-band.
+   --------------------------------------------------------------- */
+.loper { overflow: hidden; }
+.loper-band {
+  display: flex;
+  width: max-content;
+  gap: 3rem;
+  white-space: nowrap;
+  animation: loper var(--loper-duur, 32s) linear infinite;
+}
+.loper:hover .loper-band { animation-play-state: paused; }
+@keyframes loper { to { transform: translateX(-50%); } }
+
+/* ---------------------------------------------------------------
+   11. Header die zich terugtrekt bij scrollen omlaag (Bazen)
+   motion.js zet .verstopt op [data-balk] na 700 px omlaag.
+   --------------------------------------------------------------- */
+[data-balk] { transition: transform .35s var(--vlot), box-shadow .3s ease, background .3s ease; }
+[data-balk].verstopt { transform: translateY(-101%); }
+
+/* ---------------------------------------------------------------
+   12. Reduced motion: de fade-variant (bewegen uit, faden aan)
+   --------------------------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  /* Fade-variant: geen enkele verplaatsing of parallax, wel een zachte fade.
+     Zo blijft de pagina leven voor wie beweging vermindert, zonder
+     bewegingsprikkels. De verborgen beginstand (opacity 0) komt uit de
+     basisregels; hier neutraliseren we alleen alles wat verplaatst. */
+  html.js [data-rev],
+  html.js [data-stagger] > *,
+  html.js [data-hero] [data-hero-item] {
+    translate: none !important;
+    scale: none !important;
+    transform: none !important;
+    clip-path: none !important;
+    transition: opacity .45s ease !important;
+  }
+  .zweef, .puls::before, .loper-band, html.js [data-hero].in [data-hero-beeld] { animation: none !important; }
+  [data-kantel], [data-parallax] [data-laag], .parallax-scroll > *, .strook, .stapel > * { transform: none !important; transition: none !important; }
+  .scroll-balk { display: none; }
+  [data-hero-dia] { transition: opacity .45s ease; }
+  .lift:hover, .lift-zacht:hover, .diepte-laag:hover { translate: none; scale: none; }
+  *, *::before, *::after { animation-duration: .01ms !important; }
+}
+
+/* ---------------------------------------------------------------
+   13. Aanraakschermen: geen hover-effecten die blijven hangen
+   --------------------------------------------------------------- */
+@media (hover: none) {
+  .lift:hover, .lift-zacht:hover, .diepte-laag:hover { translate: none; scale: none; box-shadow: inherit; }
+  [data-kantel] { transform: none; }
+}
