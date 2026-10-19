@@ -39,7 +39,8 @@ function kaart(p) {
         <div class="inhoud">
           <span class="merknaam">${esc(p.merk)}</span>
           <h3>${esc(p.naam)}</h3>
-          <p class="spec">${esc(p.spec)}</p>
+          <p class="spec">${esc(p.intro)}</p>
+          <ul class="kenmerken">${(p.kenmerken || []).map((k) => `<li>${esc(k)}</li>`).join('')}</ul>
 ${opties}
         </div>
         <div class="kaartvoet">

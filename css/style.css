@@ -156,6 +156,13 @@ p { max-width: var(--meet); }
 }
 .bullets .bol .ico { width: 18px; height: 18px; }
 .donker .bullets .bol, .hero .bullets .bol { background: var(--cta); color: var(--inkt); }
+/* hero: elk punt een eigen icoon in een kettingblad-badge (de getande ring van het logo) */
+.hero .bullets { gap: .85rem; }
+.hero .bullets .bol { position: relative; width: 40px; height: 40px; background: rgba(143, 211, 254, .16); color: var(--cta); }
+.hero .bullets .bol::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px dotted var(--cta); transition: rotate .8s var(--vlot); }
+.hero .bullets .bol .ico { width: 20px; height: 20px; }
+.hero .bullets li:hover .bol::before { rotate: 60deg; }
+@media (prefers-reduced-motion: reduce) { .hero .bullets .bol::before { transition: none; } }
 
 /* ---- topbalk ---- */
 .topbalk { background: var(--inkt); color: #fff; font-size: .9rem; }
@@ -411,7 +418,7 @@ body.menu-open .merk { color: #fff; }
 .feiten .wrap { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); }
 .feit { padding: 1.4rem 1rem; display: grid; gap: .1rem; border-left: 1px solid var(--lijn-op-donker); }
 .feit:first-child { border-left: 0; }
-.feit strong { font-family: var(--display); font-size: 2.2rem; line-height: 1; text-transform: uppercase; }
+.feit strong { font-family: var(--display); font-size: 2.2rem; line-height: 1; text-transform: uppercase; font-variant-numeric: tabular-nums; }
 .feit strong .licht { color: var(--cta); }
 .feit span { color: var(--dim-op-donker); font-size: .92rem; }
 @media (max-width: 860px) { .feiten .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feit:nth-child(3) { border-left: 0; } .feit { border-top: 1px solid var(--lijn-op-donker); } .feit:nth-child(-n+2) { border-top: 0; } }
@@ -458,7 +465,9 @@ body.menu-open .merk { color: #fff; }
 .fiets .inhoud { padding: 1.15rem 1.25rem .9rem; display: grid; gap: .35rem; align-content: start; }
 .fiets .merknaam { font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--merk); }
 .fiets h3 { font-size: 1.35rem; }
-.fiets .spec { color: var(--dim); font-size: .92rem; }
+.fiets .spec { color: var(--tekst); font-size: .95rem; font-weight: 500; }
+.fiets .kenmerken { margin: 0; padding-left: 1.05rem; display: grid; gap: .2rem; color: var(--dim); font-size: .9rem; line-height: 1.4; list-style: disc; }
+.fiets .kenmerken li::marker { color: var(--tweede); }
 .fiets .opties { display: flex; flex-wrap: wrap; gap: .6rem .9rem; margin-top: .55rem; }
 .optie { display: grid; gap: .2rem; margin: 0; font-size: .74rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--dim); }
 .optie select { min-height: 44px; min-width: 9.5rem; padding: .45rem 2.1rem .45rem .7rem; border-radius: var(--radius); border: 1.5px solid var(--lijn); background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%230b1730' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") no-repeat right .55rem center / 15px; appearance: none; font: inherit; font-size: .95rem; font-weight: 600; letter-spacing: 0; text-transform: none; color: var(--tekst); cursor: pointer; }

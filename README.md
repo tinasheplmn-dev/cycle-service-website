@@ -109,7 +109,7 @@ De eigenaar stelt dit als eerste eis: het domein moet mee en de mailboxen moeten
 5. **Controleer** na de overstap: mail sturen én ontvangen op `info@cycle-service.nl`, de site op www en zonder www, en de planner (`/api/agenda`).
 6. **Google-bedrijfsprofiel:** website-URL blijft gelijk; controleer of de openingstijden daar gelijk zijn aan de site (Google zegt "gesloten" op maandag en donderdag, de site zegt "op afspraak").
 
-Let op: op de huidige site toont de contactpagina `info@cycle-service.nl`, maar de mailto-link wijst naar `cycle-service@outlook.com`. Bevestig welk adres leidend is (zie open punten).
+Let op: op de oude site wees de mailto-link naar `cycle-service@outlook.com`. Leidend is `info@cycle-service.nl` (bevestigd op 19 oktober 2026); zorg dat die mailbox na de verhuizing werkt.
 
 ## Beeld
 
@@ -154,7 +154,7 @@ Let op: op de huidige site toont de contactpagina `info@cycle-service.nl`, maar 
 ## Open punten (bevestigen of aanleveren)
 
 1. **De 39 Google-reviews.** De bijlage met reviews zat niet bij de opdracht. Nu staan de zes reviews op de site die publiek leesbaar waren (drie met naam, drie zonder). Lever de rest als tekst met naam, dan zet ik ze in de reviewsectie op de homepage.
-2. **E-mailadres:** `info@cycle-service.nl` (op de site) of `cycle-service@outlook.com` (de werkende link op de oude site)?
+2. **E-mailadres:** bevestigd op 19 oktober 2026: `info@cycle-service.nl` is leidend. Dat staat overal op de site. Let bij de domeinverhuizing op dat deze mailbox blijft werken.
 3. **Plannerwindow:** 7.30 tot 15.30 uur, dinsdag tot en met vrijdag, één fiets tegelijk. Klopt dat? Aanpassen kan bovenin `server.js`.
 4. **Sluiting 26 september tot 10 oktober** staat op de oude site en is in de planner geblokkeerd. Klopt dat voor 2026?
 5. **Naam van de tweede persoon** op de foto voor de deur (nu alleen Jay genoemd).
@@ -165,7 +165,7 @@ Let op: op de huidige site toont de contactpagina `info@cycle-service.nl`, maar 
 10. **Algemene voorwaarden, KvK-nummer en btw-nummer:** die stonden op de oude site alleen als Jimdo-placeholder. Voor een webshop moeten ze er wel staan. Lever ze aan, dan komen ze op `voorwaarden.html` en in de footer.
 11. **Verzendkosten onder € 100**, en of verzenden naar België of de rest van de EU moet kunnen. De oude site noemde alleen "gratis boven € 100" en "alleen EU".
 12. **Webshopprijzen en voorraad:** overgenomen van de oude shop op 19 oktober 2026. Loop ze na, vooral de Mondraker Arid Carbon R: die staat er twee keer, één keer op voorraad in de winkel (maat M, € 3.499) en één keer als nieuw model op bestelling (€ 4.499). Klopt dat?
-13. **Retouradres en terugbetaaltermijn:** het retourbeleid zegt "terugbetaling binnen 5 werkdagen" en het herroepingsbeleid "uiterlijk binnen veertien dagen". Dat botst niet, maar kies bij voorkeur één termijn. Op de voorwaardenpagina staat nu `info@cycle-service.nl` (op de oude site stond daar `cycle-service@outlook.com`).
+13. **Retouradres en terugbetaaltermijn:** het retourbeleid zegt "terugbetaling binnen 5 werkdagen" en het herroepingsbeleid "uiterlijk binnen veertien dagen". Dat botst niet, maar kies bij voorkeur één termijn.
 14. **Productfoto's:** de Mondraker- en Gemini-foto's zijn merkfoto's. Bevestig dat Jay ze als dealer mag gebruiken (meestal wel).
 15. **Tarieven** bevestigen vóór livegang (€ 69, € 159, € 85 en de toeslagen).
 16. **Bevestigingsmail:** de planner slaat op en meldt via webhook; automatische bevestigingsmail naar de klant (via `MELDING_URL` of een mail-API) is de logische volgende stap.
