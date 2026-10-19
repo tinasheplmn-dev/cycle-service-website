@@ -39,7 +39,18 @@ const INSTELLINGEN = {
     controle:   { naam: 'Controlebeurt race, MTB of gravel',   duur: 75,  prijs: 69 },
     ebike:      { naam: 'Onderhoudsbeurt e-bike',              duur: 90,  prijs: 85 },
   },
+  /* Webshop: alles staat klaar, alleen de betaalprovider moet nog gekoppeld worden (zie winkel.js en README). */
+  winkel: {
+    betaalprovider: process.env.BETAALPROVIDER || 'geen',   /* 'geen' = betalen bij ophalen of via betaalverzoek, 'mollie' = online */
+    mollieKey: process.env.MOLLIE_API_KEY || '',
+    basisUrl: process.env.BASIS_URL || 'http://localhost:8141',
+    /* Verzenden geldt alleen voor onderdelen (levering "verzenden" in producten.json), binnen Nederland.
+       Zoals op de oude site: gratis vanaf € 100, levertijd 1 tot 4 werkdagen. Het bedrag onder € 100 is nog
+       niet bekend; zolang kosten null is, kan verzenden alleen vanaf € 100 (alle huidige onderdelen kosten meer). */
+    verzenden: { actief: true, gratisVanaf: 100, kosten: null, levertijd: '1 tot 4 werkdagen' },
+  },
   soorten: {
+    bestelling: { prefix: 'WS', verplicht: [], statussen: ['nieuw', 'wacht op betaling', 'betaald', 'klaar om op te halen', 'verzonden', 'afgerond', 'geannuleerd'] },
     boeking: { prefix: 'CS', verplicht: ['naam', 'telefoon', 'email', 'beurt', 'datum', 'tijd'], statussen: ['nieuw', 'bevestigd', 'in de werkplaats', 'klaar', 'opgehaald', 'geannuleerd'] },
     aanvraag: { prefix: 'V', verplicht: ['naam', 'telefoon'], statussen: ['nieuw', 'beantwoord', 'afgerond'] },
   },
@@ -214,7 +225,7 @@ h2{font-size:1.05rem;margin:1.4rem 0 .5rem;color:#334}
 .status button{font:inherit;font-size:.85rem;padding:.4rem .7rem;border-radius:6px;border:1px solid var(--lijn);background:var(--vlak);cursor:pointer}
 .status button.huidig{background:var(--ok);color:#fff;border-color:var(--ok)}
 .leeg{color:#4a5568;padding:2rem;text-align:center}.tel{font-weight:600}
-.slot{display:inline-block;background:#eef1f6;border-radius:6px;padding:.1rem .5rem;margin-right:.3rem;font-size:.9rem}
+ul.regels{margin:.4rem 0 .3rem;padding-left:1.1rem}.slot{display:inline-block;background:#eef1f6;border-radius:6px;padding:.1rem .5rem;margin-right:.3rem;font-size:.9rem}
 footer{text-align:center;color:#4a5568;font-size:.85rem;padding:2rem}
 @media(max-width:640px){.kaart{grid-template-columns:1fr}.status{justify-content:flex-start;max-width:none}}
 </style>
@@ -229,11 +240,12 @@ const dagNaam=iso=>new Date(iso+'T00:00:00').toLocaleDateString('nl-NL',{weekday
 const wanneer=iso=>new Date(iso).toLocaleString('nl-NL',{day:'numeric',month:'short',hour:'2-digit',minute:'2-digit'});
 const eindtijd=(t,d)=>{const [h,m]=t.split(':').map(Number);const e=h*60+m+Number(d||0);return String(Math.floor(e/60)).padStart(2,'0')+':'+String(e%60).padStart(2,'0')};
 async function laad(){const r=await fetch('/api/'+actief+'?token='+encodeURIComponent(TOKEN));const j=await r.json();if(!j.ok){lijst.innerHTML='<p class="leeg">'+tekst(j.fout)+'</p>';return}
- tabs.innerHTML=SOORTEN.map(s=>'<button class="'+(s===actief?'actief':'')+'" data-s="'+s+'">'+(s==='boeking'?'Afspraken':'Aanvragen')+'</button>').join('');
+ tabs.innerHTML=SOORTEN.map(s=>'<button class="'+(s===actief?'actief':'')+'" data-s="'+s+'">'+({boeking:'Afspraken',bestelling:'Bestellingen',aanvraag:'Berichten'}[s]||s)+'</button>').join('');
  if(!j.items.length){lijst.innerHTML='<p class="leeg">Nog niets binnen.</p>';return}
- const kaart=it=>{const velden=Object.entries(it).filter(([k])=>!['id','soort','status','ontvangen','bijgewerkt','naam','telefoon','datum','tijd','duur','beurt','beurtNaam','prijs'].includes(k)&&it[k]);
+ const kaart=it=>{const velden=Object.entries(it).filter(([k])=>!['id','soort','status','ontvangen','bijgewerkt','naam','telefoon','datum','tijd','duur','beurt','beurtNaam','prijs','token','regels','subtotaal','verzendkosten','totaal','betaling','adres','levering'].includes(k)&&!(it.soort==='bestelling'&&k==='email')&&it[k]);
   return '<article class="kaart '+(it.status===j.statussen[0]?'nieuw':'')+'"><div><h3>'+tekst(it.id)+' · '+tekst(it.naam)+' <span class="tel">'+tekst(it.telefoon)+'</span></h3>'
    +(it.datum?'<div><span class="slot">'+tekst(it.tijd)+' tot '+eindtijd(it.tijd,it.duur)+'</span> '+tekst(it.beurtNaam)+' · € '+tekst(it.prijs)+'</div>':'')
+   +(it.soort==='bestelling'?'<div><span class="slot">€ '+Number(it.totaal).toFixed(2)+'</span> '+(it.levering==='verzenden'?'verzenden naar '+tekst(it.adres&&(it.adres.straat+', '+it.adres.postcode+' '+it.adres.plaats)):'afhalen in de winkel')+' · '+tekst(it.email)+'</div><ul class="regels">'+(it.regels||[]).map(r=>'<li>'+r.aantal+'× '+tekst(r.naam)+(r.maat?' ('+tekst(r.maat)+')':'')+' · € '+Number(r.subtotaal).toFixed(2)+'</li>').join('')+'</ul><div><small>betaling:</small> '+tekst(it.betaling&&it.betaling.status)+'</div>':'')
    +'<small>binnengekomen '+wanneer(it.ontvangen)+'</small>'
    +velden.map(([k,v])=>'<div><small>'+tekst(k)+':</small> '+tekst(v)+'</div>').join('')+'</div><div class="status">'
    +j.statussen.map(s=>'<button class="'+(s===it.status?'huidig':'')+'" data-id="'+it.id+'" data-status="'+s+'">'+s+'</button>').join('')+'</div></article>'};
@@ -250,7 +262,7 @@ laad();setInterval(laad,30000);
 
 /* ---------- statisch ---------- */
 function statisch(req, res, pad) {
-  if (pad.startsWith('/_data') || pad.startsWith('/_bouw') || pad.includes('..') || pad === '/server.js') { res.writeHead(404); return res.end('Niet gevonden'); }
+  if (pad.startsWith('/_data') || pad.startsWith('/_bouw') || pad.includes('..') || pad === '/server.js' || pad === '/winkel.js') { res.writeHead(404); return res.end('Niet gevonden'); }
   let bestand = path.join(INSTELLINGEN.root, pad);
   if (pad === '/') bestand = path.join(INSTELLINGEN.root, 'index.html');
   else if (!path.extname(bestand) && fs.existsSync(bestand + '.html')) bestand += '.html';
@@ -261,12 +273,16 @@ function statisch(req, res, pad) {
   });
 }
 
+/* ---------- webshop ---------- */
+const winkel = require('./winkel')({ INSTELLINGEN, lees, schrijf, nieuwNummer, json, leesBody, ontsmet, meld });
+
 /* ---------- server ---------- */
 http.createServer(async (req, res) => {
   const pad = decodeURIComponent(new URL(req.url, 'http://x').pathname);
   try {
     if (pad === '/beheer') return beheerPagina(req, res);
     if (pad === '/api/agenda' && req.method === 'GET') return apiAgenda(req, res);
+    if (pad.startsWith('/api/') && await winkel(req, res, pad)) return;
     const api = /^\/api\/([a-z]+)(?:\/([^/]+)\/status)?$/.exec(pad);
     if (api) {
       const [, soort, id] = api;

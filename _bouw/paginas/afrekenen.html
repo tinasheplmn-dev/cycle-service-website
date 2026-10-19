@@ -1,0 +1,94 @@
+<!-- meta {"titel": "Afrekenen | Cycle Service Sint-Oedenrode", "omschrijving": "Rond je bestelling bij Cycle Service af: controleer je winkelwagen, kies afhalen in de winkel en plaats je bestelling.", "pad": "afrekenen.html", "catalogus": true, "scripts": ["js/afrekenen.js"], "kruimel": "Afrekenen", "head": "<meta name=\"robots\" content=\"noindex\">"} -->
+<section class="pagina-kop compact" aria-label="Afrekenen">
+  <div class="wrap">
+    <div class="eyebrow">Webshop</div>
+    <h1>Afrekenen</h1>
+    <p class="lead">Controleer je bestelling, vul je gegevens in en kies hoe je hem ontvangt.</p>
+  </div>
+</section>
+
+<section class="sectie licht2" aria-label="Je bestelling" data-afrekenen style="padding-top: 2rem">
+  <div class="wrap">
+    <div class="melding" data-melding hidden role="alert"></div>
+    <p class="melding zacht" data-statisch hidden>Dit is een voorbeeldweergave zonder winkelserver. Je bestelling gaat als WhatsApp-bericht naar Jay.</p>
+
+    <div class="leeg-blok" data-leeg hidden>
+      <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-tas"/></svg>
+      <h2>Je winkelwagen is leeg</h2>
+      <p class="lead">Kies eerst een fiets of onderdeel in de shop.</p>
+      <a class="knop knop-vol" href="fietsen.html">Naar de shop</a>
+    </div>
+
+    <div class="status-blok" data-status hidden aria-live="polite"><h2>Even geduld</h2><p class="lead">We controleren je betaling.</p></div>
+
+    <div class="bevestiging" data-bevestiging hidden>
+      <span class="vinkje"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-vink"/></svg></span>
+      <h2>Bedankt voor je bestelling</h2>
+      <p class="lead">Bestelnummer <strong data-b-nummer></strong> · totaal <strong data-b-totaal></strong></p>
+      <ul class="b-regels" data-b-regels></ul>
+      <p data-b-volgende></p>
+      <div class="knoppen"><a class="knop knop-navy" href="fietsen.html">Verder winkelen</a><a class="knop knop-lijn" href="index.html">Naar de homepage</a></div>
+      <p class="powered">Webshop powered by Mettafel</p>
+    </div>
+
+    <div class="checkout" data-checkout-stappen>
+      <form class="checkout-form" data-checkout novalidate>
+        <div class="checkout-blok">
+          <div class="stapkop"><span class="nr">1</span><h2>Je gegevens</h2></div>
+          <div class="form">
+            <div class="veld"><label for="naam">Naam</label><input id="naam" name="naam" type="text" autocomplete="name" required><span class="fout" hidden>Vul je naam in.</span></div>
+            <div class="rij">
+              <div class="veld"><label for="email">E-mail</label><input id="email" name="email" type="email" autocomplete="email" required><span class="fout" hidden>Controleer je e-mailadres.</span></div>
+              <div class="veld"><label for="telefoon">Telefoon</label><input id="telefoon" name="telefoon" type="tel" autocomplete="tel" required><span class="fout" hidden>Vul je telefoonnummer in.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-blok">
+          <div class="stapkop"><span class="nr">2</span><h2>Hoe ontvang je het?</h2></div>
+          <div class="leveropties">
+            <label class="leveroptie"><input type="radio" name="levering" value="afhalen" checked><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-winkel"/></svg><span><strong>Afhalen in de winkel</strong><small>Handelsweg 11, Sint-Oedenrode. Fietsen staan rijklaar afgesteld klaar. Gratis.</small></span></label>
+            <label class="leveroptie" data-optie-verzenden hidden><input type="radio" name="levering" value="verzenden"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-truck"/></svg><span><strong>Verzenden: <em class="prijsje" data-verzendprijs>Gratis</em></strong><small>Onderdelen, binnen Nederland. Je hebt het binnen 1 tot 4 werkdagen in huis.</small></span></label>
+          </div>
+          <div class="form adres" data-adres hidden>
+            <div class="veld"><label for="straat">Straat en huisnummer</label><input id="straat" name="straat" type="text" autocomplete="street-address" required><span class="fout" hidden>Vul je adres in.</span></div>
+            <div class="rij">
+              <div class="veld"><label for="postcode">Postcode</label><input id="postcode" name="postcode" type="text" autocomplete="postal-code" inputmode="text" placeholder="1234 AB" required><span class="fout" hidden>Vul je postcode in.</span></div>
+              <div class="veld"><label for="plaats">Plaats</label><input id="plaats" name="plaats" type="text" autocomplete="address-level2" required><span class="fout" hidden>Vul je plaats in.</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="checkout-blok">
+          <div class="stapkop"><span class="nr">3</span><h2>Betalen</h2></div>
+          <div class="betaalinfo" data-betaal-later>
+            <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-euro"/></svg>
+            <p><strong>Je betaalt bij het ophalen of via een betaalverzoek.</strong> Jay bevestigt je bestelling binnen één werkdag. Online betalen met iDEAL komt binnenkort.</p>
+          </div>
+          <div class="betaalinfo" data-betaal-online hidden>
+            <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-schild"/></svg>
+            <p><strong>Je betaalt veilig online</strong> met iDEAL, Bancontact of creditcard. Na het bestellen ga je naar de betaalpagina.</p>
+          </div>
+          <div class="veld"><label for="opmerking">Opmerking (optioneel)</label><textarea id="opmerking" name="opmerking" placeholder="Bijv. graag afhalen op zaterdag, of een vraag over de maat"></textarea></div>
+          <label class="vink"><input type="checkbox" name="akkoord" required><span>Ik ga akkoord met de <a href="voorwaarden.html" target="_blank" style="text-decoration: underline">voorwaarden en het herroepingsrecht</a>.</span><span class="fout" hidden>Ga akkoord om te bestellen.</span></label>
+          <button class="knop knop-vol knop-groot" type="submit"><span data-verstuur-label>Bestelling plaatsen</span> <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-pijl"/></svg></button>
+          <p class="hint">Je krijgt direct een bestelnummer. Vragen? Bel of app 06 28828966.</p>
+        </div>
+      </form>
+
+      <aside class="overzicht-blok" aria-label="Je bestelling">
+        <h2>Je bestelling</h2>
+        <ul class="overzicht" data-overzicht></ul>
+        <dl class="totalen">
+          <div><dt>Subtotaal</dt><dd data-subtotaal>€ 0</dd></div>
+          <div><dt>Levering</dt><dd data-verzend>Gratis</dd></div>
+          <div class="eind"><dt>Totaal <small>incl. btw</small></dt><dd data-totaal>€ 0</dd></div>
+        </dl>
+        <button type="button" class="knop knop-lijn" data-mand-open>Winkelwagen aanpassen</button>
+        <p class="powered">Webshop powered by Mettafel</p>
+      </aside>
+    </div>
+
+    <noscript><div class="bevestiging"><h2>Bestellen zonder JavaScript</h2><p>Stuur Jay een WhatsApp met wat je wilt bestellen.</p><a class="knop knop-vol" href="https://wa.me/31628828966?text=Hoi%20Jay%2C%20ik%20wil%20graag%20bestellen%3A%20">Bestel via WhatsApp</a></div></noscript>
+  </div>
+</section>

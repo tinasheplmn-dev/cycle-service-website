@@ -10,10 +10,10 @@ Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenro
 
 **Huisstijl**
 - Navy `#0b1730` en `#14305e` van het gevelbord als drager; koel gebroken wit `#fafbfd` als achtergrond (de opdrachtgever wilde een lichte site).
-- Kettingbladgeel `#c6f135` als enig accent: knoppen, markeringen en de verlopende rand (navy naar elektrisch blauw naar geel) op kaarten en beeldkaders. Gekozen omdat geel nog vrij was in het archief en de kleur letterlijk in de winkel zit (zadelwand, hi-vis fietskleding).
+- Lichtblauw `#8fd3fe` (diepere tint `#6cc2f8`) als accent: knoppen, markeringen en de verlopende rand (navy naar elektrisch blauw naar lichtblauw) op kaarten en beeldkaders. Tot 19 oktober 2026 was dit kettingbladgeel `#c6f135`; Jay vond dat te veel een AI-look hebben en vroeg om lichtblauw.
 - Lettertypen: Big Shoulders Display (koppen, gecondenseerd en atletisch) en Hanken Grotesk (body). Beide zelf gehost in `assets/fonts/`, beide nieuw in het archief.
 - Eigen iconenset in `assets/iconen.svg` (kettingblad als bullet-teken, sleutel, schijfrem, accu, agenda, enzovoort).
-- Woordmerk: inline SVG in de header en footer, gebaseerd op het gevelbord (CYCLE SERVICE met RACE · MTB · GRAVEL · E-BIKES). Er was geen logobestand; vervang de SVG in `_bouw/kop.html`, `_bouw/voet.html` en `index.html` zodra er een definitief logo is.
+- Logo (nieuw, 19 oktober 2026): een kettingblad-C met een blauwe naaf naast het woordmerk CYCLE SERVICE en de regel RACE · MTB · GRAVEL · E-BIKES. De letters zijn omgezet naar paden, dus het logo hangt niet af van een geladen lettertype. Bestanden: `assets/logo.svg` (op licht), `assets/logo-wit.svg` (op donker), `assets/favicon.svg`, `assets/apple-touch-icon.png` en `assets/favicon-192.png`. Een ander logo vervang je in die bestanden; de HTML hoeft niet mee te veranderen.
 
 ## Pagina's
 
@@ -22,7 +22,9 @@ Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenro
 | `index.html` | Overtuigen en laten plannen: hero met live planner-kaart, feiten, werkplaatslabels, drie beurten, stappen, Jay, reviews, fietsen, slotband |
 | `werkplaats.html` | De drie beurten volledig uitgeschreven, aanvullend werk, garantie, losse reparaties |
 | `planner.html` | De onderhoudsplanner (beurt, dag, brengtijd, gegevens, bevestiging met agenda-bestand) |
-| `fietsen.html` | De acht fietsen op voorraad, merken en onderdelen, aanvraag via WhatsApp |
+| `fietsen.html` | De shop: 20 producten (fietsen op voorraad, Mondraker-modellen, Gemini-onderdelen) met filters en winkelwagen |
+| `afrekenen.html` | Checkout: overzicht, gegevens, afhalen of verzenden, betalen (noindex) |
+| `voorwaarden.html` | Bestellen, levering, retourbeleid, herroepingsbeleid met modelformulier, wettelijke garantie |
 | `over.html` | Het verhaal van Jay, hoe hij werkt, de zaak |
 | `contact.html` | Adres, kaart, openingstijden, contactformulier, veelgestelde vragen (met FAQ-structured data) |
 
@@ -34,9 +36,38 @@ node _bouw/bouw.mjs
 
 `index.html` is handgeschreven. Pas je het menu of de footer aan, doe dat dan in de partials én in `index.html`.
 
-Geschrapt ten opzichte van de oude site: de koffiebar-pagina (opdracht: daar komt niemand speciaal voor; de koffie wordt één keer genoemd bij de zaak), de losse impressie- en galerijpagina's (beeld zit nu in de secties) en de Jimdo-webshop met PayPal (zie open punten).
+Geschrapt ten opzichte van de oude site: de koffiebar-pagina (opdracht: daar komt niemand speciaal voor; de koffie wordt één keer genoemd bij de zaak), de losse impressie- en galerijpagina's (beeld zit nu in de secties) en PayPal (de webshop zelf is wel nagebouwd, zie hieronder).
+
+## De webshop (powered by Mettafel)
+
+Winkelwagen en checkout zijn compleet. Alleen de betaalprovider moet nog gekoppeld worden.
+
+**Catalogus.** Alle producten staan in `_bouw/producten.json`: id, merk, naam, categorie (race, gravel, mtb, ebike, onderdelen), staat (nieuw, occasion, demo), prijs, voorraad, levering (`afhalen` of `verzenden`), foto, spec en eventueel `opties`. Na een wijziging draai je `node _bouw/bouw.mjs`; de kaarten, filters en de catalogus in de pagina's worden dan opnieuw gemaakt. De server leest hetzelfde bestand en rekent elke bestelling zelf opnieuw uit, dus een prijs in de browser aanpassen werkt niet.
+
+**Varianten.** `opties` is een lijst zoals `[{"naam": "Kleur", "waarden": ["Team Issue"]}, {"naam": "Maat", "waarden": ["S","M","L","XL"]}]`. Zet er alleen leverbare waarden in. Eén waarde verschijnt als vaste tekst, meerdere als keuzemenu. De server weigert een variant die niet in de lijst staat.
+
+**Filters** op de shoppagina: categorie (ook via de link, bijvoorbeeld `fietsen.html#onderdelen`), merk, nieuw of gebruikt, sorteren op prijs en alleen op voorraad.
+
+**Winkelwagen.** Het paneel schuift van rechts in en de teller staat in de header. De inhoud wordt op het toestel bewaard (`localStorage`). Je kunt maximaal één stuk per fiets in een bepaalde maat bestellen en tien per onderdeel.
+
+**Levering.** Fietsen worden altijd afgehaald, rijklaar afgesteld. Onderdelen kunnen ook verzonden worden, binnen Nederland, zoals op de oude site: gratis vanaf € 100, levertijd 1 tot 4 werkdagen. Het bedrag onder € 100 is niet bekend, dus verzenden kan nu alleen vanaf € 100. Alle huidige onderdelen kosten meer dan dat. Instellen in `server.js`, `INSTELLINGEN.winkel.verzenden` (`gratisVanaf`, `kosten`).
+
+**Betalen.** Standaard (`BETAALPROVIDER=geen`) komt de bestelling binnen als "nieuw". De klant betaalt dan bij het ophalen, of Jay stuurt een betaalverzoek. Online betalen met iDEAL, Bancontact en creditcard via Mollie zet je zo aan:
+
+1. Maak een Mollie-account aan en kopieer de API-sleutel (eerst `test_...`, na goedkeuring `live_...`).
+2. Zet op de host `BETAALPROVIDER=mollie`, `MOLLIE_API_KEY=...` en `BASIS_URL=https://www.cycle-service.nl`.
+3. Herstart. De checkout toont dan "Bestellen en betalen" en stuurt door naar Mollie. Na het betalen keert de klant terug op `afrekenen.html`, die de status ophaalt. Mollie meldt de betaling ook via `POST /api/betaling/webhook`.
+
+Een andere provider koppelen? Vervang dan `startBetaling` en `ververs` in `winkel.js`; de rest blijft gelijk.
+
+**Beheer.** Op `/beheer?token=...` staat het tabblad Bestellingen, met de regels, de uitvoering, de levering en de statusknoppen: nieuw, wacht op betaling, betaald, klaar om op te halen, verzonden, afgerond, geannuleerd. Een nieuwe bestelling gaat ook naar `MELDING_URL`.
+
+**Zonder server** (bijvoorbeeld op GitHub Pages) werkt de winkelwagen gewoon. Bij het afrekenen opent dan een WhatsApp-bericht aan Jay met de bestelling.
 
 ## De onderhoudsplanner (powered by Mettafel)
+
+**Status: in de wacht.** Jay gaat afspraken plannen via CycleSoftware (zijn kassasysteem, zie https://www.youtube.com/watch?v=PacThSt_XiQ). De eigen planner hieronder werkt en blijft staan tot die koppeling er is. Daarna wordt `planner.html` een doorverwijzing of een embed van CycleSoftware.
+
 
 `server.js` is een Node-server zonder dependencies die de site serveert én de planner draait.
 
@@ -66,6 +97,8 @@ De site heeft een Node-host nodig vanwege de planner: Railway, Render, Fly of ee
 `_data/` moet op een persistente schijf staan (Railway volume of vergelijkbaar), anders zijn afspraken weg bij een herstart.
 
 ## Domein en mail overzetten vanaf Jimdo
+
+**Status: gebeurt als laatste**, na akkoord op de site. Het stappenplan hieronder ligt klaar.
 
 De eigenaar stelt dit als eerste eis: het domein moet mee en de mailboxen moeten blijven werken. Stappenplan:
 
@@ -104,6 +137,16 @@ Let op: op de huidige site toont de contactpagina `info@cycle-service.nl`, maar 
 - **Prijsblok per beurt** (prijs groot, duur ernaast, afsluitende lijn eronder) in plaats van losse tekst direct onder de kop.
 - Footerlinks en inline links in hulpteksten zijn nu minimaal 24 pixels hoog.
 
+## Wijzigingen na feedback van Jay (19 oktober 2026)
+
+- **Nieuw logo**, zie Huisstijl.
+- **Groen/geel wordt lichtblauw** in de hele site, inclusief iconen, verlopen, favicon en deelafbeelding (`assets/img/og.jpg`, opnieuw gemaakt uit `_bouw/og.html`).
+- **Vijf stappen in plaats van vier:** stap 4 is nu "Prijsopgave per e-mail". Jay mailt vooraf een prijsopgave en begint pas na akkoord. Dezelfde belofte staat ook in de planner-bevestiging, het werkplaatslabel en de veelgestelde vragen op de contactpagina.
+- **Shop met filters**, en de twaalf producten van de Jimdo-webshop toegevoegd: drie Gemini-onderdelen en negen Mondraker-modellen. Alleen de varianten die daar leverbaar waren, zijn te kiezen. De zes modellen die daar "niet op voorraad" stonden, tonen het label "Op bestelling" en de knop "Vraag naar levertijd". De productfoto's zijn de merkfoto's van de oude shop (`assets/img/shop-*.webp`).
+- **Winkelwagen, checkout en beheer van bestellingen** gebouwd; alleen de betaalprovider moet nog gekoppeld worden.
+- **Voorwaardenpagina** met de retour-, herroepings- en garantieteksten van de oude site. De open plek in het herroepingsbeleid van Jimdo ("naam van de webshop-eigenaar...") is ingevuld met de gegevens van Cycle Service.
+- **Planner en domein** in de wacht, zie hierboven.
+
 ## Keuring en controle
 
 `node ~/.claude/skills/website-bouwen/scripts/keuring.mjs .` gaf 0 fouten. Waarschuwingen die bewust blijven staan: `opacity` op twee decoratieve SVG-elementen (het kettingblad en het touwtje van het label, geen tekst) en "geen JSON-LD" op subpagina's (die hebben nu BreadcrumbList; de contactpagina ook FAQPage). In de browser gemeten op 1440 en 390: geen horizontale scroll, hero-kop 115 px op desktop en 48 px op mobiel, bullets één regel, contrast van alle tekst minimaal 7:1 (de sterren en stapnummers zijn na de meting van goud en verloop naar navy en geel gezet). Reveals fail-open (`?foto=1` toont alles statisch).
@@ -118,7 +161,11 @@ Let op: op de huidige site toont de contactpagina `info@cycle-service.nl`, maar 
 6. **Instagram-handle** (bestaat, niet geverifieerd; nu alleen Facebook in de footer).
 7. **Fietsfoto's:** elke fiets heeft nu de foto van de huidige winkelpagina. De koppeling foto-fiets volgt de volgorde van die pagina; loop ze één keer na of elke foto bij de juiste fiets staat (vooral de twee Berria's en de twee Mondraker Arids lijken op elkaar).
 8. **Q'Motiv-logo** is maar 191 pixels breed, het enige formaat dat het merk aanbiedt. Op een scherm met hoge resolutie kan het iets zachter ogen. Vraag Q'Motiv om een SVG of een grotere PNG.
-9. **Webshop:** de Jimdo-webshop (Mondraker-modellen, Gemini-onderdelen, PayPal) is niet nagebouwd; de fietsenpagina werkt met een aanvraag via WhatsApp. Wil Jay online verkopen, dan is een eigen bestelsysteem (zelfde backendpatroon) of een lichte shop de volgende stap.
-10. **Juridische pagina's:** impressum, herroepingsrecht en algemene voorwaarden staan op de oude site nog als Jimdo-placeholder. Zonder webshop zijn ze niet nodig; met webshop wel.
-11. **Tarieven** bevestigen vóór livegang (€ 69, € 159, € 85 en de toeslagen).
-12. **Betaling en mailbevestiging:** de planner slaat op en meldt via webhook; automatische bevestigingsmail naar de klant (via `MELDING_URL` of een mail-API) is de logische volgende stap.
+9. **Betaalprovider:** Mollie aanvragen (KvK-nummer en bankrekening nodig), dan de drie omgevingsvariabelen zetten. Zie "De webshop".
+10. **Algemene voorwaarden, KvK-nummer en btw-nummer:** die stonden op de oude site alleen als Jimdo-placeholder. Voor een webshop moeten ze er wel staan. Lever ze aan, dan komen ze op `voorwaarden.html` en in de footer.
+11. **Verzendkosten onder € 100**, en of verzenden naar België of de rest van de EU moet kunnen. De oude site noemde alleen "gratis boven € 100" en "alleen EU".
+12. **Webshopprijzen en voorraad:** overgenomen van de oude shop op 19 oktober 2026. Loop ze na, vooral de Mondraker Arid Carbon R: die staat er twee keer, één keer op voorraad in de winkel (maat M, € 3.499) en één keer als nieuw model op bestelling (€ 4.499). Klopt dat?
+13. **Retouradres en terugbetaaltermijn:** het retourbeleid zegt "terugbetaling binnen 5 werkdagen" en het herroepingsbeleid "uiterlijk binnen veertien dagen". Dat botst niet, maar kies bij voorkeur één termijn. Op de voorwaardenpagina staat nu `info@cycle-service.nl` (op de oude site stond daar `cycle-service@outlook.com`).
+14. **Productfoto's:** de Mondraker- en Gemini-foto's zijn merkfoto's. Bevestig dat Jay ze als dealer mag gebruiken (meestal wel).
+15. **Tarieven** bevestigen vóór livegang (€ 69, € 159, € 85 en de toeslagen).
+16. **Bevestigingsmail:** de planner slaat op en meldt via webhook; automatische bevestigingsmail naar de klant (via `MELDING_URL` of een mail-API) is de logische volgende stap.

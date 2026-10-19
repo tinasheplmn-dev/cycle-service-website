@@ -1,0 +1,406 @@
+{
+  "bron": "Fietsen op voorraad van cycle-service.nl/winkel (24 september 2026) en webshopproducten van cycle-service.nl/webshop (19 oktober 2026). Bij webshopproducten staan alleen de varianten die op de oude site leverbaar waren. Prijzen inclusief btw, te bevestigen door Jay voor livegang.",
+  "categorieen": [
+    {
+      "id": "race",
+      "naam": "Racefietsen",
+      "icoon": "fiets"
+    },
+    {
+      "id": "gravel",
+      "naam": "Gravel",
+      "icoon": "gravel"
+    },
+    {
+      "id": "mtb",
+      "naam": "Mountainbikes",
+      "icoon": "mtb"
+    },
+    {
+      "id": "ebike",
+      "naam": "E-bikes",
+      "icoon": "accu"
+    },
+    {
+      "id": "onderdelen",
+      "naam": "Onderdelen",
+      "icoon": "kettingblad"
+    }
+  ],
+  "producten": [
+    {
+      "id": "mondraker-arid-carbon-r-m",
+      "merk": "Mondraker",
+      "naam": "Arid Carbon R",
+      "categorie": "gravel",
+      "staat": "nieuw",
+      "maat": "maat M",
+      "prijs": 3499,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-mondraker-arid-m-800.webp",
+      "alt": "Mondraker Arid Carbon R gravelbike in blauw en turquoise voor de winkel van Cycle Service",
+      "spec": "Veelzijdige gravelbike. Forward Geometry en Stealth Carbon geven balans tussen snelheid en comfort. Carbon frame, zadelpen en stuur · Mavic Allroad S Carbon wielset · Maxxis Reaver 45 mm · SRAM Rival XPLR 13sp."
+    },
+    {
+      "id": "mondraker-arid-carbon-r-custom-l",
+      "merk": "Mondraker",
+      "naam": "Arid Carbon R custom",
+      "categorie": "gravel",
+      "staat": "nieuw",
+      "maat": "maat L",
+      "prijs": 5299,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-mondraker-arid-l-800.webp",
+      "alt": "Mondraker Arid Carbon R gravelbike in zwart met witte vork, custom opgebouwd",
+      "spec": "Dezelfde gravelbike, custom opgebouwd. Carbon frame, zadelpen en cockpit · Scope R4.G wielset · Vittoria Terreno T50 50 mm · SRAM Rival XPLR/GX 12sp mullet."
+    },
+    {
+      "id": "mondraker-f-podium-rr-custom-l",
+      "merk": "Mondraker",
+      "naam": "F-Podium RR custom",
+      "categorie": "mtb",
+      "staat": "demo",
+      "maat": "maat L",
+      "prijs": 5499,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-mondraker-fpodium-800.webp",
+      "alt": "Blauwe Mondraker F-Podium full suspension mountainbike voor de winkel",
+      "spec": "Stealth Air full-carbon frame, 110 mm achtervering, 120 mm RockShox SID met Flight Attendant. SRAM Motive Silver 4P remmen · DT240 wielset (1350 g) · Vittoria Mezcal 2.4 · SRAM X0 Transmission met powermeter."
+    },
+    {
+      "id": "berria-belador-pro-57",
+      "merk": "Berria",
+      "naam": "Belador Pro",
+      "categorie": "race",
+      "staat": "nieuw",
+      "maat": "57 cm",
+      "prijs": 3499,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-berria-57-800.webp",
+      "alt": "Zwarte Berria Belador Pro racefiets met carbon wielset en bruine zijwandbanden",
+      "spec": "Allround racefiets die efficiëntie en comfort combineert. Carbon frame, zadelpen en cockpit · Scope S4 carbon wielset · Vittoria Rubino · Shimano 105 Di2."
+    },
+    {
+      "id": "berria-belador-pro-55",
+      "merk": "Berria",
+      "naam": "Belador Pro",
+      "categorie": "race",
+      "staat": "nieuw",
+      "maat": "55 cm",
+      "prijs": 2499,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-berria-55-800.webp",
+      "alt": "Witte Berria Belador Pro racefiets met mechanische Shimano 105",
+      "spec": "Dezelfde allrounder met mechanische groep. Carbon frame, zadelpen en cockpit · Vision Trimax 35 wielset · Vittoria Rubino · Shimano 105 mechanisch."
+    },
+    {
+      "id": "scott-addict-rc-30-54",
+      "merk": "Scott",
+      "naam": "Addict RC 30",
+      "categorie": "race",
+      "staat": "occasion",
+      "maat": "54 cm",
+      "prijs": 2799,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-scott-addict-800.webp",
+      "alt": "Zwarte Scott Addict RC 30 racefiets met diepe carbon wielen, occasion",
+      "spec": "Voorzien van een grote onderhoudsbeurt, in uitstekende staat, aankoopfacturen aanwezig. HMX carbon frame · SRAM Rival eTap AXS met powermeter · Scope S5 wielset · S-Works 28 mm · Prologo zadel."
+    },
+    {
+      "id": "superior-iblox-63-l",
+      "merk": "Superior",
+      "naam": "iBLOX 6.3",
+      "categorie": "ebike",
+      "staat": "nieuw",
+      "maat": "maat L",
+      "prijs": 2750,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-superior-iblox-800.webp",
+      "alt": "Zwarte Superior iBLOX 6.3 e-bike met lage instap en bagagedrager",
+      "spec": "Lichte elektrische stads- en tourfiets voor de recreatieve en sportieve fietser. Bosch Performance SX motor · 400 Wh accu · Shimano CUES 9 versnellingen · slechts 23,5 kg."
+    },
+    {
+      "id": "qmotiv",
+      "merk": "Q'Motiv",
+      "naam": "Q'Motiv",
+      "categorie": "ebike",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 1999,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "fiets-qmotiv-800.webp",
+      "alt": "Witte Q'Motiv e-bike met Gates riemaandrijving en bruine banden",
+      "spec": "Minimalistisch in design, licht in gewicht, laag in onderhoud. Ideaal voor dagelijks gebruik, ook in het zwart leverbaar. Mivice achterwielmotor · 500/600 Wh accu · Gates riem · slechts 22 kg."
+    },
+    {
+      "id": "gemini-rigel-gravel-road",
+      "merk": "Gemini",
+      "naam": "Rigel Carbon kettingblad gravel en road",
+      "categorie": "onderdelen",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 148,
+      "voorraad": true,
+      "levering": "verzenden",
+      "foto": "shop-gemini-rigel-chainring-gravel-road-800.webp",
+      "alt": "Gemini Rigel carbon kettingblad voor gravel en racefiets",
+      "spec": "Carbon kettingblad met een 7075-T6 aluminium kern, handgemaakt in Barcelona. Licht, stijf en efficiënt. Met crash replacement: bij schade krijg je korting op een nieuw blad.",
+      "opties": [
+        {
+          "naam": "Aansluiting",
+          "waarden": [
+            "SRAM 8-bolt"
+          ]
+        },
+        {
+          "naam": "Tanden",
+          "waarden": [
+            "40T",
+            "42T"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gemini-rigel-mtb",
+      "merk": "Gemini",
+      "naam": "Rigel Carbon kettingblad MTB",
+      "categorie": "onderdelen",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 135,
+      "voorraad": true,
+      "levering": "verzenden",
+      "foto": "shop-gemini-rigel-chainring-mtb-800.webp",
+      "alt": "Gemini Rigel carbon kettingblad voor mountainbike",
+      "spec": "Carbon kettingblad met een 7075-T6 aluminium kern, handgemaakt in Barcelona. Licht, stijf en efficiënt. Met crash replacement: bij schade krijg je korting op een nieuw blad.",
+      "opties": [
+        {
+          "naam": "Aansluiting",
+          "waarden": [
+            "SRAM 8-bolt (Transmission)"
+          ]
+        },
+        {
+          "naam": "Tanden",
+          "waarden": [
+            "32T",
+            "34T"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gemini-waessat-mtb",
+      "merk": "Gemini",
+      "naam": "WÄSSAT Ultralight carbon MTB-stuur",
+      "categorie": "onderdelen",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 239,
+      "voorraad": true,
+      "levering": "verzenden",
+      "foto": "shop-gemini-waessat-handlebar-mtb-800.webp",
+      "alt": "Gemini WÄSSAT ultralicht carbon mountainbikestuur",
+      "spec": "Ultralicht carbon stuur van Mitsubishi MR70 carbon, handgemaakt in Barcelona. Trillingsdempende vorm voor meer comfort op lange ritten. Met crash replacement.",
+      "opties": [
+        {
+          "naam": "Finish",
+          "waarden": [
+            "Mat"
+          ]
+        },
+        {
+          "naam": "Layup",
+          "waarden": [
+            "Performance"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mondraker-f-podium-rr-sl",
+      "merk": "Mondraker",
+      "naam": "F-Podium RR SL",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 12999,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-f-podium-rr-sl-800.webp",
+      "alt": "Mondraker F-Podium RR SL full suspension mountainbike in blauw en zwart",
+      "spec": "Full suspension XC-racer. RockShox SID Luxe Ultimate Flight Attendant 120/110 mm · SRAM XX SL T-Type met powermeter · SRAM Motive Ultimate 4P · Mavic CrossMax Carbon SL Ultimate · 11,2 kg.",
+      "opties": [
+        {
+          "naam": "Kleur",
+          "waarden": [
+            "Team Issue"
+          ]
+        },
+        {
+          "naam": "Maat",
+          "waarden": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mondraker-f-podium-rr",
+      "merk": "Mondraker",
+      "naam": "F-Podium RR",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 7999,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-f-podium-rr-800.webp",
+      "alt": "Mondraker F-Podium RR full suspension mountainbike in zwart",
+      "spec": "Full suspension XC-racer. RockShox SID Luxe Ultimate Flight Attendant 120/110 mm · SRAM X0 T-Type met powermeter · SRAM Motive Silver 4P · Mavic CrossMax S Carbon · 11,8 kg.",
+      "opties": [
+        {
+          "naam": "Kleur",
+          "waarden": [
+            "Team Issue"
+          ]
+        },
+        {
+          "naam": "Maat",
+          "waarden": [
+            "L"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mondraker-f-podium-r",
+      "merk": "Mondraker",
+      "naam": "F-Podium R",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 5999,
+      "voorraad": true,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-f-podium-r-800.webp",
+      "alt": "Mondraker F-Podium R full suspension mountainbike in rood",
+      "spec": "Full suspension XC-racer. RockShox Flight 3-position 120/110 mm · SRAM S1000 T-Type · SRAM Motive Bronze 4P · Mavic CrossMax 29 · 12,2 kg.",
+      "opties": [
+        {
+          "naam": "Kleur",
+          "waarden": [
+            "Team Issue",
+            "Flame Red",
+            "Superblack"
+          ]
+        },
+        {
+          "naam": "Maat",
+          "waarden": [
+            "S",
+            "M",
+            "L",
+            "XL"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "mondraker-podium-rr-sl",
+      "merk": "Mondraker",
+      "naam": "Podium RR SL",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 9999,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-podium-rr-sl-800.webp",
+      "alt": "Mondraker Podium RR SL hardtail mountainbike in blauw en zwart",
+      "spec": "Carbon hardtail van 7,95 kg. Fox 32 Step Cast Float SL Factory 100 mm · SRAM XX SL T-Type · Hope XCR Pro X2 · DT Swiss XRC1200 Carbon."
+    },
+    {
+      "id": "mondraker-podium-rr",
+      "merk": "Mondraker",
+      "naam": "Podium RR",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 6499,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-podium-rr-800.webp",
+      "alt": "Mondraker Podium RR hardtail mountainbike in zwart",
+      "spec": "Carbon hardtail. RockShox SID Luxe Ultimate Flight Attendant 100 mm · SRAM X0 T-Type met powermeter · SRAM Motive Bronze 4P · Mavic CrossMax S Carbon · 9,3 kg."
+    },
+    {
+      "id": "mondraker-podium-s",
+      "merk": "Mondraker",
+      "naam": "Podium S",
+      "categorie": "mtb",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 3299,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-podium-s-800.webp",
+      "alt": "Mondraker Podium S hardtail mountainbike in rood",
+      "spec": "Carbon hardtail om mee te beginnen. RockShox Recon Gold RL 100 mm met remote lock-out · SRAM 70 T-Type · Shimano MT501 · Mavic CrossRide 29 · 10,9 kg."
+    },
+    {
+      "id": "mondraker-arid-carbon-rr-sl",
+      "merk": "Mondraker",
+      "naam": "Arid Carbon RR SL",
+      "categorie": "gravel",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 8999,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-arid-carbon-rr-sl-800.webp",
+      "alt": "Mondraker Arid Carbon RR SL gravelbike in lichtblauw",
+      "spec": "Gravelbike met ruimte voor banden tot 54 mm. SRAM Red XPLR met powermeter · Zipp 303 XPLR SW · Onoff S9 GR carbon stuur en zadelpen · Goodyear XPLR 45 mm · 7,9 kg."
+    },
+    {
+      "id": "mondraker-arid-carbon-rr",
+      "merk": "Mondraker",
+      "naam": "Arid Carbon RR",
+      "categorie": "gravel",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 6199,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-arid-carbon-rr-800.webp",
+      "alt": "Mondraker Arid Carbon RR gravelbike in zwart",
+      "spec": "Gravelbike met ruimte voor banden tot 54 mm. SRAM Force XPLR met powermeter · Zipp 303 XPLR S · Onoff S9 GR carbon stuur en zadelpen · Goodyear XPLR 45 mm · 8,8 kg."
+    },
+    {
+      "id": "mondraker-arid-carbon-r",
+      "merk": "Mondraker",
+      "naam": "Arid Carbon R",
+      "categorie": "gravel",
+      "staat": "nieuw",
+      "maat": "",
+      "prijs": 4499,
+      "voorraad": false,
+      "levering": "afhalen",
+      "foto": "shop-mondraker-arid-carbon-r-800.webp",
+      "alt": "Mondraker Arid Carbon R gravelbike in zilver en roze",
+      "spec": "Gravelbike met ruimte voor banden tot 54 mm. SRAM Rival XPLR · Mavic Allroad SL · Onoff S9 GR carbon stuur en zadelpen · Maxxis Reaver 45 mm · 8,9 kg."
+    }
+  ]
+}
