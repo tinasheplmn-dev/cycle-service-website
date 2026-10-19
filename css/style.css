@@ -423,32 +423,66 @@ body.menu-open .merk { color: #fff; }
 .feit span { color: var(--dim-op-donker); font-size: .92rem; }
 @media (max-width: 860px) { .feiten .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); } .feit:nth-child(3) { border-left: 0; } .feit { border-top: 1px solid var(--lijn-op-donker); } .feit:nth-child(-n+2) { border-top: 0; } }
 
-/* ---- reviews ---- */
-.reviews { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.4fr); gap: 1.2rem; }
-.review-groot {
-  background: var(--inkt); color: #fff; border-radius: var(--radius-groot); padding: 2.2rem 2rem; display: grid; gap: 1.2rem; align-content: space-between; position: relative; overflow: hidden;
+/* ---- reviews: scorekaart links, reviewmuur rechts ---- */
+.reviews { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: clamp(1.2rem, 2.5vw, 2rem); align-items: start; }
+.score {
+  position: sticky; top: 110px; overflow: hidden; isolation: isolate;
+  background: var(--inkt); color: #fff; border-radius: var(--radius-groot);
+  padding: 1.8rem 1.7rem; display: grid; gap: 1.1rem; box-shadow: var(--schaduw-2);
 }
-.review-groot .quote { position: absolute; right: 1rem; top: -1.4rem; font-family: var(--display); font-size: 12rem; line-height: 1; color: var(--cta); opacity: .35; font-weight: 900; }
-.review-groot p { font-size: clamp(1.2rem, 1.6vw, 1.45rem); line-height: 1.45; font-weight: 500; position: relative; }
-.review-groot .wie { display: flex; align-items: center; gap: .8rem; }
-.review-raster { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.2rem; }
-.review { background: #fff; border-radius: var(--radius-groot); padding: 1.4rem 1.4rem 1.3rem; display: grid; gap: .8rem; align-content: start; box-shadow: var(--schaduw-1); }
-.review .wie { display: flex; align-items: center; gap: .7rem; }
-.avatar { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-family: var(--display); font-size: 1.15rem; background: var(--papier-2); color: var(--merk); flex: none; }
-.review-groot .avatar { background: var(--cta); color: var(--inkt); }
+.score .kettingblad { position: absolute; right: -70px; bottom: -70px; width: 240px; color: var(--cta); opacity: .12; z-index: -1; animation: draai 40s linear infinite; }
+@keyframes draai { to { rotate: 360deg; } }
+@media (prefers-reduced-motion: reduce) { .score .kettingblad { animation: none; } }
+.score .bron { display: flex; align-items: center; gap: .55rem; font-size: .85rem; font-weight: 700; color: var(--dim-op-donker); }
+.score .bron .g-logo { width: 22px; height: 22px; background: #fff; border-radius: 50%; padding: 3px; }
+.score .cijfer { display: flex; align-items: baseline; gap: .6rem; line-height: .85; }
+.score .cijfer strong { font-family: var(--display); font-weight: 800; font-size: clamp(5rem, 9vw, 7rem); font-variant-numeric: tabular-nums; }
+.score .cijfer span { font-weight: 700; color: var(--dim-op-donker); }
+.sterren.groot { color: var(--cta); font-size: 1.7rem; letter-spacing: .12em; line-height: 1; }
+.score p { color: var(--dim-op-donker); font-size: .95rem; }
+.score p strong { color: #fff; }
+.terugkomt { display: grid; gap: .55rem; padding-top: 1rem; border-top: 1px solid var(--lijn-op-donker); }
+.terugkomt small { font-size: .74rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700; color: var(--cta); }
+.terugkomt ul { display: flex; flex-wrap: wrap; gap: .4rem; }
+.terugkomt li { padding: .35rem .7rem; border-radius: 999px; border: 1px solid var(--lijn-op-donker); background: rgba(255, 255, 255, .06); font-size: .85rem; font-weight: 600; }
+.score .knop { justify-self: start; }
+
+.review-muur { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.review {
+  position: relative; background: #fff; border-radius: var(--radius-groot); padding: 1.4rem 1.4rem 1.25rem;
+  display: grid; gap: .9rem; align-content: start; box-shadow: var(--schaduw-1);
+  transition: translate .3s var(--vlot), box-shadow .3s var(--vlot);
+}
+.review:hover { translate: 0 -4px; box-shadow: var(--schaduw-2); }
+.review-uitgelicht { grid-column: 1 / -1; padding: 1.9rem 2rem 1.6rem; overflow: hidden; }
+.review-uitgelicht p { font-size: clamp(1.15rem, 1.6vw, 1.4rem); line-height: 1.5; font-weight: 500; max-width: 46ch; }
+.review-uitgelicht .quote { position: absolute; right: 2rem; bottom: -6.2rem; font-family: var(--display); font-size: 17rem; line-height: 1; font-weight: 900; color: var(--cta); opacity: .5; pointer-events: none; }
+.review-kop { display: flex; align-items: center; justify-content: space-between; gap: .8rem; flex-wrap: wrap; }
+.review-kop .sterren { color: var(--merk); font-size: 1rem; letter-spacing: .08em; }
+.onderwerp { font-size: .74rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--merk); background: var(--papier-2); padding: .3rem .6rem; border-radius: 999px; position: relative; }
+.review p { font-size: .98rem; line-height: 1.6; position: relative; }
+.review mark { background: linear-gradient(transparent 56%, rgba(143, 211, 254, .65) 56%); color: inherit; padding: 0 .1em; font-weight: 600; }
+.review .wie { display: flex; align-items: center; gap: .75rem; margin-top: auto; padding-top: .9rem; border-top: 1px solid var(--lijn); }
+.avatar { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; font-weight: 800; font-family: var(--display); font-size: 1.2rem; flex: none; color: #fff; background: var(--inkt); box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--cta); }
+.review-uitgelicht .avatar { background: var(--tweede); }
 .wie .naam { font-weight: 700; line-height: 1.2; }
-.wie .sterren { color: var(--merk); font-size: .95rem; letter-spacing: .05em; }
-.review-groot .wie .sterren { color: var(--cta); }
-.wie small { color: var(--dim); font-size: .82rem; }
-.review-groot .wie small { color: var(--dim-op-donker); }
-.review p { font-size: .98rem; }
-.reviews-voet { margin-top: 1.6rem; display: flex; flex-wrap: wrap; gap: 1rem; align-items: center; justify-content: space-between; }
-@media (max-width: 1020px) { .reviews { grid-template-columns: 1fr; } }
-@media (max-width: 860px) {
-  .reviews { display: flex; gap: 1rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .5rem var(--gutter) 1rem; margin-inline: calc(var(--gutter) * -1); scrollbar-width: none; }
-  .reviews::-webkit-scrollbar { display: none; }
-  .review-raster { display: contents; }
-  .reviews > *, .review-raster > * { flex: 0 0 84%; scroll-snap-align: start; }
+.wie small { display: inline-flex; align-items: center; gap: .35rem; color: var(--dim); font-size: .82rem; }
+.wie .g-logo { width: 14px; height: 14px; }
+@media (max-width: 1020px) {
+  .reviews { grid-template-columns: 1fr; }
+  .score { position: relative; top: 0; grid-template-columns: auto 1fr; align-items: center; column-gap: 1.6rem; }
+  .score > :not(.cijfer):not(.kettingblad) { grid-column: 2; }
+  .score .cijfer { grid-row: 1 / span 3; flex-direction: column; align-items: flex-start; }
+}
+@media (max-width: 640px) {
+  .score { grid-template-columns: 1fr; }
+  .score > :not(.cijfer):not(.kettingblad) { grid-column: auto; }
+  .score .cijfer { grid-row: auto; flex-direction: row; align-items: baseline; }
+  .review-muur { display: flex; gap: .9rem; overflow-x: auto; scroll-snap-type: x mandatory; padding: .4rem var(--gutter) 1rem; margin-inline: calc(var(--gutter) * -1); scrollbar-width: none; }
+  .review-muur::-webkit-scrollbar { display: none; }
+  .review-muur > * { flex: 0 0 86%; scroll-snap-align: center; }
+  .review-uitgelicht { padding: 1.4rem 1.4rem 1.25rem; }
+  .review-uitgelicht .quote { font-size: 10rem; right: 1rem; bottom: -3.6rem; opacity: .35; }
 }
 
 /* ---- fietsenstrook ---- */
