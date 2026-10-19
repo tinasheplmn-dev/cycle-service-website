@@ -162,7 +162,13 @@ p { max-width: var(--meet); }
 .hero .bullets .bol::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px dotted var(--cta); transition: rotate .8s var(--vlot); }
 .hero .bullets .bol .ico { width: 20px; height: 20px; }
 .hero .bullets li:hover .bol::before { rotate: 60deg; }
-@media (prefers-reduced-motion: reduce) { .hero .bullets .bol::before { transition: none; } }
+/* dezelfde badge op een lichte achtergrond */
+.bullets.badges { gap: .9rem; }
+.bullets.badges .bol { position: relative; width: 40px; height: 40px; background: var(--inkt); color: var(--cta); }
+.bullets.badges .bol::before { content: ''; position: absolute; inset: -4px; border-radius: 50%; border: 2.5px dotted var(--tweede); transition: rotate .8s var(--vlot); }
+.bullets.badges .bol .ico { width: 20px; height: 20px; }
+.bullets.badges li:hover .bol::before { rotate: 60deg; }
+@media (prefers-reduced-motion: reduce) { .hero .bullets .bol::before, .bullets.badges .bol::before { transition: none; } }
 
 /* ---- topbalk ---- */
 .topbalk { background: var(--inkt); color: #fff; font-size: .9rem; }
@@ -383,6 +389,31 @@ body.menu-open .merk { color: #fff; }
   .stappen.vijf > * { flex: 0 0 44%; scroll-snap-align: start; }
 }
 @media (max-width: 640px) { .stappen.vijf > * { flex-basis: 80%; } }
+
+/* ---- zo werkt het: vijf stappen aan één tijdlijn, zonder kaders ---- */
+.stappen.vijf { gap: 0; scroll-padding-inline: var(--gutter); }
+.donker .stappen.vijf .stap { background: none; border: 0; border-radius: 0; box-shadow: none; padding: 2.6rem 1.6rem 0 0; gap: .6rem; }
+.stappen.vijf .stap::before {
+  content: ''; position: absolute; top: 8px; left: 0; right: 0; height: 2px;
+  background: linear-gradient(90deg, rgba(143, 211, 254, .6), rgba(143, 211, 254, .22));
+  transform-origin: left center; transition: transform .9s var(--vlot) calc(var(--i, 0) * 140ms);
+}
+.stappen.vijf .stap:last-child::before { background: linear-gradient(90deg, rgba(143, 211, 254, .6), transparent 85%); }
+.stappen.vijf .stap::after {
+  content: ''; position: absolute; top: 2px; left: 0; width: 14px; height: 14px; border-radius: 50%;
+  background: var(--inkt); border: 2px solid var(--cta); transition: background .3s var(--vlot), box-shadow .3s var(--vlot);
+}
+.stappen.vijf .nr { font-size: clamp(3.2rem, 4.4vw, 4.2rem); color: transparent; -webkit-text-stroke: 1.5px var(--cta); transition: color .3s var(--vlot); }
+.stappen.vijf .stap h3 { color: #fff; }
+.stappen.vijf .stap p { max-width: 30ch; }
+.stappen.vijf .stap:hover .nr { color: var(--cta); }
+.stappen.vijf .stap:hover::after { background: var(--cta); }
+.donker .stappen.vijf .stap.uitgelicht { background: none; }
+.stappen.vijf .stap.uitgelicht .nr { color: var(--cta); }
+.stappen.vijf .stap.uitgelicht::after { background: var(--cta); box-shadow: 0 0 0 6px rgba(143, 211, 254, .18); }
+/* de lijn tekent zich als de sectie in beeld komt (alleen met JavaScript, anders staat hij er gewoon) */
+html.js:not(.klaar) .stappen.vijf:not(.in) .stap::before { transform: scaleX(0); }
+@media (prefers-reduced-motion: reduce) { .stappen.vijf .stap::before { transition: none; } }
 @media (max-width: 520px) { .stappen { grid-template-columns: 1fr; } }
 
 /* ---- tweekolommen met beeldkader ---- */
