@@ -76,3 +76,20 @@
   var rij = document.querySelector('[data-tijden-tabel] [data-dag="' + new Date().getDay() + '"]');
   if (rij) rij.classList.add('vandaag');
 })();
+
+/* Google Maps pas laden na een klik: Google plaatst daarbij cookies */
+(function () {
+  'use strict';
+  var vak = document.querySelector('[data-kaart]');
+  if (!vak) return;
+  var knop = vak.querySelector('[data-kaart-laden]');
+  knop.addEventListener('click', function () {
+    var f = document.createElement('iframe');
+    f.title = 'Kaart met de locatie van Cycle Service, Handelsweg 11 Sint-Oedenrode';
+    f.src = vak.dataset.kaart;
+    f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
+    f.setAttribute('allowfullscreen', '');
+    vak.replaceWith(f);
+    f.focus();
+  });
+})();

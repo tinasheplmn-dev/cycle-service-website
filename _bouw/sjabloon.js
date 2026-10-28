@@ -254,6 +254,6 @@ function sitemap(paginas, cat, datum) {
     .concat(cat.producten.map((p) => `  <url><loc>${BASIS}${productPad(p)}</loc><lastmod>${(p.bijgewerkt || datum).slice(0, 10)}</lastmod><priority>${p.voorraad ? '0.6' : '0.4'}</priority>${p.foto ? `<image:image><image:loc>${BASIS}${esc(fotoUrl(p.fotoGroot || p.foto))}</image:loc></image:image>` : ''}</url>`));
   return `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">\n${regels.join('\n')}\n</urlset>\n`;
 }
-const PAGINAS = [['index.html', '1.0'], ['werkplaats.html', '0.9'], ['planner.html', '0.9'], ['fietsen.html', '0.8'], ['contact.html', '0.8'], ['over.html', '0.6'], ['voorwaarden.html', '0.3']];
+const PAGINAS = [['index.html', '1.0'], ['werkplaats.html', '0.9'], ['planner.html', '0.9'], ['fietsen.html', '0.8'], ['contact.html', '0.8'], ['over.html', '0.6'], ['voorwaarden.html', '0.3'], ['privacy.html', '0.2']];
 
 module.exports = { BASIS, DIENSTEN, PAGINAS, esc, getal, prijsTekst, fotoUrl, grootUrl, productPad, vulTokens, kaart, filterBalk, catalogusScript, itemListLd, productLd, kruimelLd, pagina, productPagina, sitemap, ldScript, markeerMenu };

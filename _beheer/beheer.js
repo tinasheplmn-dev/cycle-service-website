@@ -11,7 +11,7 @@
   var bedragVeld = function (n) { return n === '' || n == null ? '' : (Number(n) % 1 ? Number(n).toFixed(2) : String(n)).replace('.', ','); };
   var fotoUrl = function (f) { return !f ? '' : f.indexOf('/') > -1 ? '/' + f : '/assets/img/' + f; };
   var inhoud = $('[data-inhoud]');
-  var PAGINANAMEN = { 'index.html': 'Homepage', 'werkplaats.html': 'Werkplaats', 'planner.html': 'Plan je beurt', 'fietsen.html': 'Shop', 'over.html': 'Over Jay', 'contact.html': 'Contact', 'voorwaarden.html': 'Voorwaarden', 'afrekenen.html': 'Afrekenen' };
+  var PAGINANAMEN = { 'index.html': 'Homepage', 'werkplaats.html': 'Werkplaats', 'planner.html': 'Plan je beurt', 'fietsen.html': 'Shop', 'over.html': 'Over Jay', 'contact.html': 'Contact', 'voorwaarden.html': 'Voorwaarden', 'privacy.html': 'Privacy', 'afrekenen.html': 'Afrekenen' };
 
   /* ---------- server ---------- */
   function api(methode, pad, body, ruw) {
@@ -53,12 +53,16 @@
     e.preventDefault();
     var f = e.target, knop = $('button', f), fout = $('[data-inlog-fout]');
     knop.disabled = true; fout.hidden = true;
-    fetch('/api/beheer/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ wachtwoord: f.wachtwoord.value }) })
+    fetch('/api/beheer/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ wachtwoord: f.wachtwoord.value, code: f.code.value }) })
       .then(function (r) { return r.json(); })
       .then(function (j) {
         knop.disabled = false;
-        if (!j.ok) { fout.textContent = j.fout; fout.hidden = false; f.wachtwoord.select(); return; }
-        csrf = j.csrf; f.wachtwoord.value = '';
+        if (!j.ok) {
+          fout.textContent = j.fout; fout.hidden = false;
+          if (j.tweeStap) { $('[data-code-veld]').hidden = false; f.code.value = ''; f.code.focus(); } else f.wachtwoord.select();
+          return;
+        }
+        csrf = j.csrf; f.wachtwoord.value = ''; f.code.value = '';
         toonApp(j.moetWijzigen);
       }).catch(function () { knop.disabled = false; fout.textContent = 'Geen verbinding met de server.'; fout.hidden = false; });
   });
@@ -351,7 +355,7 @@
   /* ---------- teksten en foto's ---------- */
   SCHERMEN.teksten = function () {
     return api('GET', 'inhoud').then(function (j) {
-      var paginas = ['index.html', 'werkplaats.html', 'planner.html', 'fietsen.html', 'over.html', 'contact.html', 'voorwaarden.html'];
+      var paginas = ['index.html', 'werkplaats.html', 'planner.html', 'fietsen.html', 'over.html', 'contact.html', 'voorwaarden.html', 'privacy.html'];
       inhoud.innerHTML = kop('Teksten en foto\'s', 'Open een pagina in bewerkmodus en klik op een tekst of foto om die aan te passen. Wat je opslaat staat meteen online. De kop en voet van de site pas je op elke pagina aan; dat geldt dan overal.') +
         '<div class="paginas">' + paginas.map(function (p) {
           return '<div class="paneel pagina-kaart"><h3>' + PAGINANAMEN[p] + '</h3><small>/' + (p === 'index.html' ? '' : p) + '</small><a class="knop vol klein" href="/' + p + '?bewerken=1&foto=1">Bewerk deze pagina</a></div>';
@@ -435,18 +439,32 @@
         var detail = soort === 'bestellingen'
           ? '<div><span class="pil">' + euro(it.totaal) + '</span>' + (it.levering === 'verzenden' && it.adres ? 'verzenden naar ' + esc(it.adres.straat + ', ' + it.adres.postcode + ' ' + it.adres.plaats) : 'afhalen in de winkel') + '</div><ul>' + (it.regels || []).map(function (r) { return '<li>' + r.aantal + '× ' + esc(r.naam) + (r.maat ? ' (' + esc(r.maat) + ')' : '') + ' · ' + euro(r.subtotaal) + '</li>'; }).join('') + '</ul>' + (it.opmerking ? '<div><small>Opmerking:</small> ' + esc(it.opmerking) + '</div>' : '') + '<small>Betaling: ' + esc(it.betaling && it.betaling.status) + '</small>'
           : '<p style="white-space:pre-wrap">' + esc(it.bericht) + '</p>';
+        var wis = soort === 'berichten' ? '<button type="button" class="wis" data-verwijder-bericht="' + esc(it.id) + '">Bericht verwijderen</button>'
+          : it.gewist ? '<small>Persoonsgegevens gewist op ' + wanneer(it.gewist) + '</small>' : '<button type="button" class="wis" data-wis-bestelling="' + esc(it.id) + '">Persoonsgegevens wissen</button>';
         return '<article class="item' + (it.status === j.statussen[0] ? ' nieuw' : '') + '"><div>' + kopje + detail + '<div><small>Binnengekomen ' + wanneer(it.ontvangen) + '</small></div></div><div class="statussen">' +
-          j.statussen.map(function (s) { return '<button type="button" class="' + (s === it.status ? 'huidig' : '') + '" data-status="' + esc(s) + '" data-id="' + esc(it.id) + '">' + esc(s) + '</button>'; }).join('') + '</div></article>';
+          j.statussen.map(function (s) { return '<button type="button" class="' + (s === it.status ? 'huidig' : '') + '" data-status="' + esc(s) + '" data-id="' + esc(it.id) + '">' + esc(s) + '</button>'; }).join('') + wis + '</div></article>';
       }).join('') : '<div class="paneel leeg">Nog niets binnen.</div>');
       $$('[data-status]').forEach(function (b) {
         b.addEventListener('click', function () {
           api('POST', soort + '/' + b.dataset.id + '/status', { status: b.dataset.status }).then(function () { toast('Status: ' + b.dataset.status); route(); }).catch(faal);
         });
       });
+      $$('[data-verwijder-bericht]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (!confirm('Dit bericht definitief verwijderen? (Back-ups worden na 30 dagen overschreven.)')) return;
+          api('DELETE', 'berichten/' + b.dataset.verwijderBericht).then(function () { toast('Bericht verwijderd'); route(); }).catch(faal);
+        });
+      });
+      $$('[data-wis-bestelling]').forEach(function (b) {
+        b.addEventListener('click', function () {
+          if (!confirm('Naam, e-mail, telefoon, adres en opmerking van deze bestelling wissen? De bedragen blijven staan voor je administratie. Dit kan niet ongedaan worden.')) return;
+          api('POST', 'bestellingen/' + b.dataset.wisBestelling + '/wis', {}).then(function () { toast('Persoonsgegevens gewist'); route(); }).catch(faal);
+        });
+      });
     });
   }
-  SCHERMEN.bestellingen = function () { return lijstScherm('bestellingen', 'Bestellingen', 'Nieuwe bestellingen staan bovenaan. Zet de status bij als je de bestelling klaarzet of verstuurt.'); };
-  SCHERMEN.berichten = function () { return lijstScherm('berichten', 'Berichten', 'Berichten uit het contactformulier.'); };
+  SCHERMEN.bestellingen = function () { return lijstScherm('bestellingen', 'Bestellingen', 'Nieuwe bestellingen staan bovenaan. Zet de status bij als je de bestelling klaarzet of verstuurt. Bestellingen worden na 7 jaar automatisch verwijderd; vraagt een klant om verwijdering, wis dan de persoonsgegevens (de bedragen blijven voor je administratie).'); };
+  SCHERMEN.berichten = function () { return lijstScherm('berichten', 'Berichten', 'Berichten uit het contactformulier. Ze worden na een jaar automatisch verwijderd; vraagt iemand eerder om verwijdering, gebruik dan de knop.'); };
 
   /* ---------- instellingen ---------- */
   SCHERMEN.instellingen = function () {
@@ -460,6 +478,9 @@
         veld('Nieuw wachtwoord nog een keer', '<input type="password" name="nogmaals" autocomplete="new-password" required>') +
         '</div><div class="knoppen"><button class="knop vol" type="submit">Wachtwoord opslaan</button></div></form>' +
         (moet ? '' :
+        '<div class="paneel" data-tweestap><h2>Tweestapsverificatie</h2>' + (r[0].tweeStap
+          ? '<p class="hulp">Staat aan. Bij het inloggen vraagt het beheer naast je wachtwoord om de code uit je authenticator-app.</p><form class="velden" data-2fa-uit>' + veld('Wachtwoord', '<input type="password" name="wachtwoord" autocomplete="current-password" required>') + veld('Code uit de app', '<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required>') + '<div class="veld" style="align-content:end"><button class="knop gevaar" type="submit">Uitzetten</button></div></form>'
+          : '<p class="hulp">Een extra slot: naast je wachtwoord een code van 6 cijfers uit een app op je telefoon (Google Authenticator, Microsoft Authenticator of de wachtwoordapp van je iPhone). Zelfs met je wachtwoord kan dan niemand zonder je telefoon inloggen.</p><div data-2fa-stap><button class="knop vol" type="button" data-2fa-start>Tweestapsverificatie instellen</button></div>') + '</div>' +
         '<div class="paneel"><h2>Eerdere versies</h2><p class="hulp">Bij elke wijziging bewaart de site de vorige versie van de producten en de teksten (de laatste 40). Iets per ongeluk aangepast of verwijderd? Zet hier een versie terug.</p>' +
           (r[1].items.length ? '<ul class="logboek">' + r[1].items.slice(0, 30).map(function (v) { return '<li><span>' + (v.soort === 'producten' ? 'Producten' : 'Teksten, foto\'s, prijzen en SEO') + ' van ' + wanneer(v.tijd) + '</span><button class="knop klein" type="button" data-versie="' + esc(v.bestand) + '">Terugzetten</button></li>'; }).join('') + '</ul>' : '<p class="hulp">Nog geen eerdere versies.</p>') + '</div>' +
         '<div class="paneel"><h2>Logboek</h2><p class="hulp">Alles wat in het beheer is gedaan, ook inlogpogingen.</p><ul class="logboek">' + r[2].items.slice(0, 60).map(function (l) { return '<li><span>' + esc(l.actie) + '</span><time>' + wanneer(l.t) + '</time></li>'; }).join('') + '</ul></div>');
@@ -467,6 +488,24 @@
         e.preventDefault(); var f = e.target;
         if (f.nieuw.value !== f.nogmaals.value) return toast('De twee nieuwe wachtwoorden zijn niet gelijk.', true);
         api('POST', 'wachtwoord', { huidig: f.huidig.value, nieuw: f.nieuw.value }).then(function () { toast('Wachtwoord gewijzigd'); f.reset(); if (moet) location.hash = '#overzicht'; else route(); }).catch(faal);
+      });
+      var start = $('[data-2fa-start]');
+      if (start) start.addEventListener('click', function () {
+        api('POST', '2fa/start', {}).then(function (j) {
+          var groepjes = j.geheim.match(/.{1,4}/g).join(' ');
+          $('[data-2fa-stap]').innerHTML = '<ol class="hulp" style="padding-left:1.2rem;display:grid;gap:.4rem;color:var(--inkt)"><li>Installeer een authenticator-app op je telefoon.</li><li>Op je telefoon? Tik op <a href="' + esc(j.uri) + '">deze link</a>. Anders: kies in de app "Sleutel invoeren" en typ deze code over:<br><strong style="font-size:1.15rem;letter-spacing:.06em">' + esc(groepjes) + '</strong></li><li>Vul hieronder de code van 6 cijfers in die de app nu toont.</li></ol>' +
+            '<form class="velden" data-2fa-aan style="margin-top:.8rem">' + veld('Code uit de app', '<input name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" required>') + '<div class="veld" style="align-content:end"><button class="knop vol" type="submit">Aanzetten</button></div></form>';
+          $('[data-2fa-aan]').addEventListener('submit', function (e) {
+            e.preventDefault();
+            api('POST', '2fa/aan', { code: e.target.code.value }).then(function () { toast('Tweestapsverificatie staat aan'); route(); }).catch(faal);
+          });
+        }).catch(faal);
+      });
+      var uit = $('[data-2fa-uit]');
+      if (uit) uit.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!confirm('Tweestapsverificatie uitzetten? Je account is dan alleen nog met je wachtwoord beveiligd.')) return;
+        api('POST', '2fa/uit', { wachtwoord: e.target.wachtwoord.value, code: e.target.code.value }).then(function () { toast('Tweestapsverificatie staat uit'); route(); }).catch(faal);
       });
       $$('[data-versie]').forEach(function (b) {
         b.addEventListener('click', function () {

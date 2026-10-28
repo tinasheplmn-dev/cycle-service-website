@@ -23,6 +23,7 @@
     <h1>Beheer</h1>
     <p>Log in om je website en webshop aan te passen.</p>
     <label class="veld"><span>Wachtwoord</span><input type="password" name="wachtwoord" autocomplete="current-password" required autofocus></label>
+    <label class="veld" data-code-veld hidden><span>Code uit je authenticator-app</span><input type="text" name="code" inputmode="numeric" autocomplete="one-time-code" maxlength="7" pattern="[0-9 ]*"></label>
     <p class="fout" data-inlog-fout role="alert" hidden></p>
     <button class="knop vol" type="submit">Inloggen</button>
     <small>Beheer powered by Mettafel</small>

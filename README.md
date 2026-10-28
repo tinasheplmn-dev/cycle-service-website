@@ -26,7 +26,8 @@ Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenro
 | `afrekenen.html` | Checkout: overzicht, gegevens, afhalen of verzenden, betalen (noindex) |
 | `voorwaarden.html` | Bestellen, levering, retourbeleid, herroepingsbeleid met modelformulier, wettelijke garantie |
 | `over.html` | Het verhaal van Jay, hoe hij werkt, de zaak |
-| `contact.html` | Adres, kaart, openingstijden, contactformulier, veelgestelde vragen (met FAQ-structured data) |
+| `contact.html` | Adres, kaart (laadt pas na een klik), openingstijden, contactformulier, veelgestelde vragen (met FAQ-structured data) |
+| `privacy.html` | Privacyverklaring: welke gegevens, waarom, bewaartermijnen, met wie gedeeld, rechten |
 | `shop-<id>.html` | Eén pagina per product: foto's, prijs, voorraad, keuzes, specificaties, omschrijving, gerelateerde producten, Product-structured data |
 
 De subpagina's worden gegenereerd uit `_bouw/paginas/*.html` plus de gedeelde kop en voet (`_bouw/kop.html`, `_bouw/voet.html`):
@@ -102,6 +103,18 @@ Hoe het werkt: de server maakt elke pagina uit de gebouwde HTML plus `DATA_MAP/i
 - Teksten uit het beheer gaan door een filter die alleen opmaak binnen een regel toelaat (vet, cursief, links naar http, mail of telefoon). Uploads moeten echt WebP, JPEG of PNG zijn (gecontroleerd op de inhoud, niet de naam), maximaal 6 MB, met een willekeurige bestandsnaam.
 - Limieten per IP: 600 verzoeken per minuut, 60 wijzigende verzoeken per minuut, 6 bestellingen en 5 contactberichten per 10 minuten. Honeypot in het contactformulier. Invoer wordt ingekort en ontdaan van HTML.
 - Getest op 28 oktober 2026: fout wachtwoord, geen sessie, geen CSRF-token, andere Origin, XSS in een tekst (`<script>`, `onerror`, `javascript:` ook met een tab ertussen), `$'` in een SEO-titel, een nep-afbeelding, te grote verzoeken (nette 413), een vervalst IP en pad-trucs (ook `/%2Fserver.js`) worden allemaal goed afgehandeld. Een onafhankelijke review vond negen punten; alle negen zijn opgelost.
+
+## Privacy (AVG)
+
+- Privacyverklaring op `privacy.html`, gelinkt in de footer, bij het contactformulier en bij het akkoordvakje in de checkout.
+- Geen trackingcookies of statistiekendiensten. De winkelwagen staat alleen in de browser van de bezoeker. Google Maps laadt pas als de bezoeker op "Toon de kaart" klikt (Google plaatst dan cookies), met daarnaast een gewone link naar Google Maps.
+- Bewaartermijnen worden automatisch toegepast (bij het starten en elke 6 uur): bestellingen 7 jaar (fiscale bewaarplicht), berichten 1 jaar, logboek met IP-adressen 90 dagen.
+- Dagelijkse back-up van bestellingen en berichten in `DATA_MAP/backup/`, 30 dagen bewaard. Let op: dat staat op dezelfde schijf. Zet bij de host ook een back-up van het volume aan.
+- Verzoek van een klant om verwijdering: in het beheer "Bericht verwijderen" of bij een bestelling "Persoonsgegevens wissen" (naam, e-mail, telefoon, adres en opmerking weg; bedragen blijven voor de administratie).
+
+## Tweestapsverificatie
+
+Optioneel, aan te zetten in Instellingen: naast het wachtwoord een code van 6 cijfers uit een authenticator-app (TOTP, werkt met Google Authenticator, Microsoft Authenticator en de wachtwoordapp van de iPhone). Het geheim kun je op de telefoon met een link openen of overtypen. Een code werkt maar één keer; ook een inlogpoging zonder code telt mee voor de blokkade. Telefoon kwijt: `BEHEER_WACHTWOORD` plus `BEHEER_RESET=1` zet een nieuw wachtwoord en haalt de tweestapsverificatie weg.
 
 ## Snelheid en mobiel
 

@@ -161,6 +161,7 @@ input:focus, select:focus, textarea:focus { outline: none; border-color: var(--t
 .item ul { margin: .4rem 0; padding-left: 1.1rem; }
 .statussen { display: flex; flex-wrap: wrap; gap: .35rem; justify-content: flex-end; max-width: 360px; align-content: start; }
 .statussen button { font-size: .85rem; padding: .35rem .7rem; border-radius: 6px; border: 1px solid var(--lijn); background: #fff; cursor: pointer; min-height: 36px; }
+.statussen button.wis { flex-basis: 100%; color: var(--fout); border-color: rgba(180, 35, 24, .35); margin-top: .3rem; }
 .statussen button.huidig { background: var(--ok); border-color: var(--ok); color: #fff; }
 .pil { display: inline-block; background: var(--papier); border-radius: 6px; padding: .1rem .5rem; font-weight: 700; margin-right: .3rem; }
 

@@ -42,6 +42,39 @@ module.exports = function maakBeheer(c) {
     return crypto.timingSafeEqual(echt, verwacht);
   }
   const account = () => leesJson('beheer', null);
+
+  /* ---------- tweestapsverificatie (TOTP, RFC 6238): 6 cijfers uit een authenticator-app, elke 30 seconden nieuw ---------- */
+  const B32 = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ234567';
+  function naarBase32(buf) {
+    let bits = 0, waarde = 0, uit = '';
+    for (const b of buf) { waarde = (waarde << 8) | b; bits += 8; while (bits >= 5) { uit += B32[(waarde >>> (bits - 5)) & 31]; bits -= 5; } }
+    if (bits > 0) uit += B32[(waarde << (5 - bits)) & 31];
+    return uit;
+  }
+  function vanBase32(s) {
+    let bits = 0, waarde = 0; const uit = [];
+    for (const c of String(s).toUpperCase().replace(/[^A-Z2-7]/g, '')) { waarde = (waarde << 5) | B32.indexOf(c); bits += 5; if (bits >= 8) { uit.push((waarde >>> (bits - 8)) & 255); bits -= 8; } }
+    return Buffer.from(uit);
+  }
+  function totp(geheim, stap) {
+    const teller = Buffer.alloc(8);
+    teller.writeBigUInt64BE(BigInt(stap));
+    const h = crypto.createHmac('sha1', vanBase32(geheim)).update(teller).digest();
+    const o = h[h.length - 1] & 15;
+    return String((h.readUInt32BE(o) & 0x7fffffff) % 1000000).padStart(6, '0');
+  }
+  /* geeft de tijdstap van een geldige code (30 seconden speling), of null; een al gebruikte stap telt niet */
+  function codeOk(geheim, code, laatste) {
+    const c = String(code || '').replace(/\s/g, '');
+    if (!geheim || !/^\d{6}$/.test(c)) return null;
+    const nu = Math.floor(Date.now() / 30000);
+    for (const d of [0, -1, 1]) {
+      const stap = nu + d;
+      if (stap <= (laatste || 0)) continue;
+      if (crypto.timingSafeEqual(Buffer.from(totp(geheim, stap)), Buffer.from(c))) return stap;
+    }
+    return null;
+  }
   function opstart() {
     const env = process.env.BEHEER_WACHTWOORD || process.env.BEHEER_TOKEN || '';
     const a = account();
@@ -236,7 +269,7 @@ module.exports = function maakBeheer(c) {
         berichten: { nieuw: a.filter((x) => x.status === 'nieuw').length, totaal: a.length },
         producten: { totaal: cat.producten.length, voorraad: cat.producten.filter((p) => p.voorraad).length, zonderFoto: cat.producten.filter((p) => !p.foto).length },
         aanpassingen: Object.keys(i.teksten).length + Object.keys(i.beelden).length,
-        logboek: leesJson('logboek', []).slice(0, 8), moetWijzigen: !!(account() || {}).moetWijzigen });
+        logboek: leesJson('logboek', []).slice(0, 8), moetWijzigen: !!(account() || {}).moetWijzigen, tweeStap: !!(account() || {}).totp });
     }
 
     /* producten */
@@ -410,6 +443,48 @@ module.exports = function maakBeheer(c) {
       log(req, `versie teruggezet: ${f}`);
       return json(res, 200, { ok: true });
     }
+    /* tweestapsverificatie aanzetten: eerst een geheim tonen, dan bevestigen met een code uit de app */
+    if (deel === '2fa/start' && m === 'POST') {
+      s.nieuwTotp = naarBase32(crypto.randomBytes(20));
+      return json(res, 200, { ok: true, geheim: s.nieuwTotp, uri: `otpauth://totp/Cycle%20Service:beheer?secret=${s.nieuwTotp}&issuer=Cycle%20Service&digits=6&period=30` });
+    }
+    if (deel === '2fa/aan' && m === 'POST') {
+      const stap = codeOk(s.nieuwTotp, body.code, 0);
+      if (stap == null) return json(res, 400, { ok: false, fout: 'Die code klopt niet. Controleer of de tijd op je telefoon klopt en probeer de volgende code.' });
+      schrijfJson('beheer', { ...account(), totp: s.nieuwTotp, laatsteStap: stap });
+      delete s.nieuwTotp;
+      for (const [k, v] of sessies) if (v !== s) sessies.delete(k);
+      log(req, 'tweestapsverificatie aangezet');
+      return json(res, 200, { ok: true });
+    }
+    if (deel === '2fa/uit' && m === 'POST') {
+      const a = account();
+      if (!a || !klopt(body.wachtwoord, a.hash)) return json(res, 400, { ok: false, fout: 'Je wachtwoord klopt niet.' });
+      if (codeOk(a.totp, body.code, a.laatsteStap) == null) return json(res, 400, { ok: false, fout: 'Die code klopt niet.' });
+      const { totp: weg, laatsteStap, ...rest } = a;
+      schrijfJson('beheer', rest);
+      log(req, 'tweestapsverificatie uitgezet');
+      return json(res, 200, { ok: true });
+    }
+
+    /* AVG: een bericht verwijderen, of de persoonsgegevens van een bestelling wissen (bedragen blijven voor de administratie) */
+    if ((r = /^berichten\/([A-Z0-9-]+)$/.exec(deel)) && m === 'DELETE') {
+      const lijst = lees('aanvraag');
+      if (!lijst.some((x) => x.id === r[1])) return json(res, 404, { ok: false, fout: 'Niet gevonden.' });
+      schrijf('aanvraag', lijst.filter((x) => x.id !== r[1]));
+      log(req, `bericht ${r[1]} verwijderd`);
+      return json(res, 200, { ok: true });
+    }
+    if ((r = /^bestellingen\/([A-Z0-9-]+)\/wis$/.exec(deel)) && m === 'POST') {
+      const lijst = lees('bestelling');
+      const b = lijst.find((x) => x.id === r[1]);
+      if (!b) return json(res, 404, { ok: false, fout: 'Niet gevonden.' });
+      Object.assign(b, { naam: '(gewist)', email: '', telefoon: '', adres: null, opmerking: '', gewist: new Date().toISOString() });
+      schrijf('bestelling', lijst);
+      log(req, `persoonsgegevens van bestelling ${r[1]} gewist`);
+      return json(res, 200, { ok: true });
+    }
+
     if (deel === 'wachtwoord' && m === 'POST') {
       const a = account();
       if (!a || !klopt(body.huidig, a.hash)) return json(res, 400, { ok: false, fout: 'Je huidige wachtwoord klopt niet.' });
@@ -442,10 +517,18 @@ module.exports = function maakBeheer(c) {
       const body = (await leesJsonBody(req, 4096)) || {};
       const a = account();
       if (!a) return json(res, 503, { ok: false, fout: 'Het beheer is nog niet ingesteld (BEHEER_WACHTWOORD).' });
-      if (!klopt(body.wachtwoord || '', a.hash)) {
+      const mislukt = (fout, extra) => {
         binnenLimiet('login-ip:' + ip, 5, 15 * 60000); binnenLimiet('login-alles', 100, 15 * 60000);
         log(req, 'mislukte inlogpoging');
-        return json(res, 401, { ok: false, fout: 'Dat wachtwoord klopt niet.' });
+        return json(res, 401, { ok: false, fout, ...extra });
+      };
+      if (!klopt(body.wachtwoord || '', a.hash)) return mislukt('Dat wachtwoord klopt niet.');
+      if (a.totp) {
+        /* ook een poging zonder code telt mee, zodat dit geen onbeperkte wachtwoordtest wordt */
+        if (!body.code) return mislukt('Vul de code uit je authenticator-app in.', { tweeStap: true });
+        const stap = codeOk(a.totp, body.code, a.laatsteStap);
+        if (stap == null) return mislukt('Die code klopt niet of is al gebruikt. Wacht op de volgende code.', { tweeStap: true });
+        schrijfJson('beheer', { ...a, laatsteStap: stap });
       }
       /* gelukt: de tellers voor dit IP weer op nul */
       wisLimiet('login-ip:' + ip);
@@ -456,7 +539,8 @@ module.exports = function maakBeheer(c) {
     const s = sessieVan(req);
     if (deel === 'sessie' && req.method === 'GET') {
       if (!s) return json(res, 200, { ok: true, ingelogd: false });
-      return json(res, 200, { ok: true, ingelogd: true, csrf: s.csrf, moetWijzigen: !!(account() || {}).moetWijzigen });
+      const a = account() || {};
+      return json(res, 200, { ok: true, ingelogd: true, csrf: s.csrf, moetWijzigen: !!a.moetWijzigen, tweeStap: !!a.totp });
     }
     if (!s) return json(res, 401, { ok: false, fout: 'Je bent uitgelogd. Log opnieuw in.', uitgelogd: true });
     if (req.method !== 'GET' && !csrfOk(req, s)) return json(res, 403, { ok: false, fout: 'Deze actie is geweigerd. Ververs de pagina en probeer het opnieuw.' });

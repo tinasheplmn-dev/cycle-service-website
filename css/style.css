@@ -985,3 +985,11 @@ body.mand-open { overflow: hidden; }
   .kruimel a, .kruimel [aria-current] { display: inline-flex; align-items: center; min-height: 44px; }
   .beurt .actie a.meer { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; }
 }
+
+/* ---- kaart pas laden na een klik (Google plaatst cookies) ---- */
+.kaart-toestemming { height: 100%; display: grid; place-content: center; justify-items: center; gap: .8rem; padding: 1.5rem; text-align: center;
+  background: linear-gradient(rgba(11, 23, 48, .82), rgba(11, 23, 48, .82)), url("../assets/img/pand-drone-900.webp") center / cover; color: #fff; }
+.kaart-toestemming > .ico { width: 34px; height: 34px; color: var(--cta); }
+.kaart-toestemming .knop-navy { background: var(--cta); color: var(--inkt); border-color: var(--cta); }
+.kaart-toestemming .klein { font-size: .85rem; color: var(--dim-op-donker); max-width: 34ch; }
+.kaart-toestemming a { color: #fff; text-decoration: underline; }

@@ -114,7 +114,12 @@
     </div>
     <div data-rev="gordijn">
       <div class="kaart-vlak diepte rand">
-        <iframe title="Kaart met de locatie van Cycle Service, Handelsweg 11 Sint-Oedenrode" src="https://www.google.com/maps?q=Handelsweg+11,+5492+NL+Sint-Oedenrode&output=embed&z=15" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+        <div class="kaart-toestemming" data-kaart="https://www.google.com/maps?q=Handelsweg+11,+5492+NL+Sint-Oedenrode&output=embed&z=15">
+          <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-pin"/></svg>
+          <p data-cms="contact-53"><strong>Handelsweg 11, Sint-Oedenrode</strong></p>
+          <button type="button" class="knop knop-navy" data-kaart-laden><span>Toon de kaart</span></button>
+          <p data-cms="contact-54" class="klein">De kaart komt van Google Maps. Google kan daarbij cookies plaatsen. <a href="https://www.google.com/maps?q=Handelsweg+11,+5492+NL+Sint-Oedenrode" target="_blank" rel="noopener">Of open hem in Google Maps</a>.</p>
+        </div>
       </div>
       <div class="beeldkader" style="margin-top: 1.2rem">
         <div class="foto diepte rand"><img data-cms="contact-f1" src="assets/img/gevelbord-1600.webp" srcset="assets/img/gevelbord-900.webp 900w, assets/img/gevelbord-1600.webp 1600w" sizes="(max-width: 860px) calc(100vw - 2.5rem), 50vw" width="1600" height="1066" alt="Het gevelbord van Cycle Service: race, MTB, gravel en e-bikes" loading="lazy" decoding="async"></div>
@@ -141,6 +146,7 @@
         <div class="veld"><label data-cms="contact-34" for="c-email">E-mail</label><input id="c-email" name="email" type="email" autocomplete="email"></div>
         <div class="veld"><label data-cms="contact-35" for="c-bericht">Waar gaat het over?</label><textarea id="c-bericht" name="bericht" required placeholder="Bijv. mijn achterderailleur schakelt niet meer naar het grootste tandwiel"></textarea><span class="fout" hidden>Vertel kort waar het over gaat.</span></div>
         <button class="knop knop-navy" type="submit">Verstuur je bericht</button>
+        <p data-cms="contact-55" class="hint">We gebruiken je gegevens alleen om je vraag te beantwoorden. Lees de <a href="privacy.html" style="text-decoration: underline">privacyverklaring</a>.</p>
         <p class="hint" data-contact-ok hidden style="color: #1d7a4a; font-weight: 600">Dank je! Je bericht is binnen. Jay reageert binnen één werkdag.</p>
         <p data-cms="contact-36" class="hint">Liever direct? <a href="https://wa.me/31628828966?text=Hoi%20Jay%2C%20ik%20heb%20een%20vraag%20over%20mijn%20fiets." target="_blank" rel="noopener" style="text-decoration: underline; font-weight: 600">Stuur een WhatsApp</a>.</p>
       </form>
@@ -214,6 +220,7 @@
   <div class="wrap onder">
     <span>© <span data-jaar>2026</span> <span data-cms="voet-28">Cycle Service Sint-Oedenrode</span></span>
     <a data-cms="voet-29" href="voorwaarden.html">Voorwaarden, retour en garantie</a>
+    <a data-cms="voet-34" href="privacy.html">Privacy</a>
     <span data-cms="voet-30">Website powered by Mettafel</span>
   </div>
 </footer>

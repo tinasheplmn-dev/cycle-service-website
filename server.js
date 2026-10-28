@@ -267,7 +267,7 @@ function pasInhoudToe(html, pad, i, d) {
   return zetSeo(h, titel, omschrijving);
 }
 
-const PAGINAS = new Set(['index.html', 'werkplaats.html', 'planner.html', 'fietsen.html', 'over.html', 'contact.html', 'voorwaarden.html', 'afrekenen.html']);
+const PAGINAS = new Set(['index.html', 'werkplaats.html', 'planner.html', 'fietsen.html', 'over.html', 'contact.html', 'voorwaarden.html', 'privacy.html', 'afrekenen.html']);
 const paginaCache = new Map();
 function maakPagina(pad) {
   const i = inhoud(), d = diensten(i), cat = catalogus();
@@ -396,6 +396,37 @@ async function nieuwBericht(req, res) {
   json(res, 201, { ok: true, id: item.id });
 }
 
+/* ---------- bewaartermijnen en back-ups (zie privacy.html) ----------
+   Bestellingen 7 jaar (fiscale bewaarplicht), berichten 1 jaar, logboek 90 dagen.
+   Elke dag een kopie van bestellingen en berichten in DATA_MAP/backup, 30 dagen bewaard. */
+const BEWAREN = { bestelling: 7 * 365, aanvraag: 365, logboek: 90 };
+function opruimen() {
+  const nu = Date.now(), dag = 86400000;
+  try {
+    for (const soort of ['bestelling', 'aanvraag']) {
+      const lijst = lees(soort);
+      const blijft = lijst.filter((x) => !x.ontvangen || nu - Date.parse(x.ontvangen) < BEWAREN[soort] * dag);
+      if (blijft.length !== lijst.length) { schrijf(soort, blijft); console.log(`Opgeruimd: ${lijst.length - blijft.length} ${soort} ouder dan de bewaartermijn`); }
+    }
+    const log = leesJson('logboek', []);
+    const recent = log.filter((x) => nu - Date.parse(x.t) < BEWAREN.logboek * dag);
+    if (recent.length !== log.length) schrijfJson('logboek', recent);
+
+    const map = path.join(dataMap, 'backup');
+    fs.mkdirSync(map, { recursive: true });
+    const datum = new Date().toISOString().slice(0, 10);
+    for (const soort of ['bestelling', 'aanvraag']) {
+      const bron = path.join(dataMap, soort + '.json');
+      const doel = path.join(map, `${soort}-${datum}.json`);
+      if (fs.existsSync(bron) && !fs.existsSync(doel)) fs.copyFileSync(bron, doel);
+    }
+    for (const f of fs.readdirSync(map)) {
+      const m = /-(\d{4}-\d{2}-\d{2})\.json$/.exec(f);
+      if (m && nu - Date.parse(m[1]) > 30 * dag) fs.unlinkSync(path.join(map, f));
+    }
+  } catch (e) { console.error('Opruimen mislukt:', e.message); }
+}
+
 /* ---------- modules ---------- */
 const ctx = { INSTELLINGEN, lees, schrijf, leesJson, schrijfJson, nieuwNummer, json, leesBody, leesJsonBody, ontsmet, meld, catalogus, inhoud, diensten, winkelInstellingen, binnenLimiet, wisLimiet, telling, ipVan, standaardSeo, dataMap, PAGINAS };
 const winkel = require('./winkel')(ctx);
@@ -449,4 +480,6 @@ server.keepAliveTimeout = 5000;
 server.listen(INSTELLINGEN.poort, () => {
   console.log(`${INSTELLINGEN.bedrijf}: http://localhost:${INSTELLINGEN.poort}  (beheer: /beheer)`);
   beheer.opstart();
+  opruimen();
+  setInterval(opruimen, 6 * 3600 * 1000).unref();
 });
