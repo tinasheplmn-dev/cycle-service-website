@@ -21,7 +21,7 @@ Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenro
 |---|---|
 | `index.html` | Overtuigen en laten plannen: hero met live planner-kaart, feiten, werkplaatslabels, drie beurten, stappen, Jay, reviews, fietsen, slotband |
 | `werkplaats.html` | De drie beurten volledig uitgeschreven, aanvullend werk, garantie, losse reparaties |
-| `planner.html` | De onderhoudsplanner (beurt, dag, brengtijd, gegevens, bevestiging met agenda-bestand) |
+| `planner.html` | Voorportaal van de online reparatieplanner van CycleSoftware: drie stappen, de beurten met prijs, knop naar de planner |
 | `fietsen.html` | De shop: 20 producten (fietsen op voorraad, Mondraker-modellen, Gemini-onderdelen) met filters en winkelwagen |
 | `afrekenen.html` | Checkout: overzicht, gegevens, afhalen of verzenden, betalen (noindex) |
 | `voorwaarden.html` | Bestellen, levering, retourbeleid, herroepingsbeleid met modelformulier, wettelijke garantie |
@@ -64,9 +64,18 @@ Een andere provider koppelen? Vervang dan `startBetaling` en `ververs` in `winke
 
 **Zonder server** (bijvoorbeeld op GitHub Pages) werkt de winkelwagen gewoon. Bij het afrekenen opent dan een WhatsApp-bericht aan Jay met de bestelling.
 
-## De onderhoudsplanner (powered by Mettafel)
+## Plannen via CycleSoftware (sinds 28 oktober 2026)
 
-**Status: in de wacht.** Jay gaat afspraken plannen via CycleSoftware (zijn kassasysteem, zie https://www.youtube.com/watch?v=PacThSt_XiQ). De eigen planner hieronder werkt en blijft staan tot die koppeling er is. Daarna wordt `planner.html` een doorverwijzing of een embed van CycleSoftware.
+Afspraken lopen via de online reparatieplanner van CycleSoftware: https://accounts.twsc.nl/cycle-service-sint-oedenrode/. Jay wil dat systeem houden.
+
+- **Waarom geen ingebouwd venster (iframe).** Getest op 28 oktober 2026. In een iframe loopt de planner vast: hij stuurt 21 keer door tussen `www.twsc.nl` en `accounts.twsc.nl` en geeft dan een foutpagina. Oorzaak: zijn sessie hangt aan cookies die een browser in een ingebouwd venster van een andere site niet meestuurt (een cookie zonder `SameSite=None`, en Safari blokkeert ze sowieso). CycleSoftware biedt geen officiële embedcode.
+- **Wat er nu staat.** `planner.html` is een voorportaal in de huisstijl: drie stappen (inloggen, reparatie plannen, prijsopgave van Jay), de drie beurten met prijs, en één knop "Open de reparatieplanner". Op een groot scherm opent die knop de planner in een eigen venster naast de site, op mobiel in een nieuw tabblad (`js/planner.js`). Komt iemand via `planner.html?beurt=onderhoud`, dan licht die beurt op.
+- **Alle "Plan je beurt"-knoppen** op de site wijzen naar `planner.html`. De kaart in de header toont geen "eerstvolgende vrije plek" meer (die kwam uit de eigen agenda).
+- **Biedt CycleSoftware later wel een widget of embedcode?** Vraag het na bij CycleSoftware. Dan kan het venster alsnog in `planner.html`.
+
+### De eigen planner (niet meer in gebruik)
+
+De eigen planner van Mettafel staat nog in `server.js` (`/api/agenda`, `/api/boeking`, tabblad Afspraken in beheer), maar geen pagina gebruikt hem meer. Hieronder de oude beschrijving.
 
 
 `server.js` is een Node-server zonder dependencies die de site serveert én de planner draait.

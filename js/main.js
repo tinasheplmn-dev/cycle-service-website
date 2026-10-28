@@ -10,7 +10,6 @@
   var OPAFSPRAAK = { 1: true, 4: true };
   var DAGEN = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
   var tijd = function (m) { return Math.floor(m / 60) + '.' + String(m % 60).padStart(2, '0'); };
-  var iso24 = function (m) { return String(Math.floor(m / 60)).padStart(2, '0') + ':' + String(m % 60).padStart(2, '0'); };
 
   function openstatus() {
     var chip = document.querySelector('[data-openstatus]');
@@ -40,40 +39,8 @@
     }
   }
 
-  /* eerstvolgende vrije plek: vraag 21 dagen op en zoek het eerste blok van 75 minuten */
-  function volgendeSlot() {
-    var el = document.querySelector('[data-volgende-slot]');
-    if (!el || typeof fetch !== 'function') return;
-    var van = new Date(); var tot = new Date(); tot.setDate(tot.getDate() + 21);
-    var iso = function (d) { return new Date(d.getTime() - d.getTimezoneOffset() * 60000).toISOString().slice(0, 10); };
-    fetch('/api/agenda?van=' + iso(van) + '&tot=' + iso(tot)).then(function (r) { return r.json(); }).then(function (j) {
-      if (!j.ok) return;
-      var a = j.agenda;
-      var toMin = function (t) { var p = t.split(':'); return Number(p[0]) * 60 + Number(p[1]); };
-      var start = toMin(a.start), eind = toMin(a.eind);
-      var nu = Date.now();
-      for (var i = 0; i < j.dagen.length; i++) {
-        var dag = j.dagen[i];
-        if (!dag.werkdag || dag.gesloten) continue;
-        for (var t = start; t + 75 <= eind; t += a.stap) {
-          var ms = new Date(dag.datum + 'T' + iso24(t) + ':00').getTime();
-          if (ms - nu < a.minUrenVooraf * 3600000) continue;
-          var vrij = dag.bezet.every(function (b) { return t >= b.tot || t + 75 <= b.van; });
-          if (vrij) {
-            var d = new Date(dag.datum + 'T00:00:00');
-            el.textContent = DAGEN[d.getDay()] + ' ' + d.getDate() + ' ' + d.toLocaleDateString('nl-NL', { month: 'long' }) + ' · ' + tijd(t) + ' uur';
-            el.style.textTransform = 'none';
-            return;
-          }
-        }
-      }
-      el.textContent = 'Bekijk de agenda';
-    }).catch(function () {});
-  }
-
   document.querySelectorAll('[data-jaar]').forEach(function (el) { el.textContent = new Date().getFullYear(); });
   openstatus();
-  volgendeSlot();
 })();
 
 /* contactformulier: stuurt naar /api/aanvraag, valt terug op WhatsApp */

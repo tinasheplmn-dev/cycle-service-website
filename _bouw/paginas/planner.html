@@ -1,110 +1,44 @@
-<!-- meta {"titel": "Beurt plannen | Cycle Service Sint-Oedenrode", "omschrijving": "Plan online een controlebeurt, onderhoudsbeurt of e-bike beurt in de echte werkplaatsagenda van Cycle Service. Je ziet meteen wanneer je fiets klaar is.", "pad": "planner.html", "scripts": ["js/planner.js"], "ogTitel": "Plan je beurt bij Cycle Service"} -->
+<!-- meta {"titel": "Beurt plannen | Cycle Service Sint-Oedenrode", "omschrijving": "Plan online een controlebeurt, onderhoudsbeurt of e-bike beurt bij Cycle Service in de online reparatieplanner. Brengen kan dinsdag tot en met vrijdag vanaf 7.30 uur.", "pad": "planner.html", "scripts": ["js/planner.js"], "ogTitel": "Plan je beurt bij Cycle Service"} -->
 <section class="pagina-kop" aria-label="Plan je beurt">
   <div class="wrap">
-    <div class="eyebrow">Onderhoudsplanner</div>
-    <h1>Plan je beurt in de werkplaatsagenda</h1>
-    <p class="lead">Kies een beurt, een dag en een brengtijd. Je ziet meteen hoe laat je fiets klaarstaat. Dinsdag tot en met vrijdag, vanaf 7.30 uur.</p>
+    <div class="eyebrow">Online reparatieplanner</div>
+    <h1>Plan je beurt online</h1>
+    <p class="lead">Je plant je beurt in de reparatieplanner van Cycle Service. Daar staat je afspraak meteen in het systeem van de werkplaats.</p>
     <div class="bewijs">
       <span class="chip"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-klok"/></svg> Brengen vanaf 7.30 uur</span>
-      <span class="chip"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-euro"/></svg> Vaste prijs, geen verrassingen</span>
+      <span class="chip"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-euro"/></svg> Vaste prijs, vooraf een prijsopgave</span>
       <span class="chip"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-fiets"/></svg> Ophalen aan huis mogelijk</span>
     </div>
   </div>
 </section>
 
-<section class="sectie licht2" aria-label="Planner" data-planner>
-  <div class="wrap">
-    <div class="melding" data-melding hidden role="alert"></div>
-
-    <div class="bevestiging" data-bevestiging hidden data-rev>
-      <span class="vinkje"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-vink"/></svg></span>
-      <h2>Je afspraak staat in de agenda</h2>
-      <p class="lead">Afspraaknummer <strong data-b-nummer></strong>. Jay bevestigt je afspraak binnen één werkdag per e-mail op <strong data-b-mail></strong>. Krijg je niets? Bel of app dan even.</p>
-      <div class="kaartje">
-        <strong data-b-wanneer></strong>
-        <span data-b-beurt></span>
-        <span data-b-klaar></span>
-      </div>
-      <ul class="bullets">
-        <li><span class="bol"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-kettingblad"/></svg></span>Lever je fiets schoon aan, dat scheelt tijd en geld</li>
-        <li><span class="bol"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-kettingblad"/></svg></span>E-bike? Neem de sleutel en de accu mee</li>
-        <li><span class="bol"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-kettingblad"/></svg></span>Je krijgt vooraf een prijsopgave per e-mail</li>
-      </ul>
-      <div class="knoppen">
-        <a class="knop knop-navy" data-b-ics href="#"><svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-downloaden"/></svg> Zet in je agenda</a>
-        <a class="knop knop-lijn" href="index.html">Terug naar de homepage</a>
-      </div>
-      <p class="powered">Onderhoudsplanner powered by Mettafel</p>
+<section class="sectie licht2" aria-label="Naar de reparatieplanner" data-planner-portaal>
+  <div class="wrap portaal">
+    <div class="portaal-kaart rand" data-rev>
+      <div class="kopje"><h2>Reparatie plannen</h2><span class="badge">Online planner</span></div>
+      <ol class="portaal-stappen">
+        <li><span class="nr">1</span><div><strong>Log in</strong><span>Met je e-mailadres, of met Google, Facebook of Microsoft.</span></div></li>
+        <li><span class="nr">2</span><div><strong>Plan je reparatie</strong><span>Kies wat er moet gebeuren en wanneer je je fiets brengt.</span></div></li>
+        <li><span class="nr">3</span><div><strong>Jay neemt het over</strong><span>Hij bekijkt je fiets en mailt je vooraf een prijsopgave.</span></div></li>
+      </ol>
+      <p class="gekozen" data-gekozen hidden></p>
+      <a class="knop knop-vol knop-groot" href="https://accounts.twsc.nl/cycle-service-sint-oedenrode/" target="_blank" rel="noopener" data-planner-open>Open de reparatieplanner <svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-pijl"/></svg></a>
+      <p class="noot">De planner opent in een nieuw venster. Liever bellen of appen? <a href="tel:+31628828966">06 28828966</a> of <a href="https://wa.me/31628828966?text=Hoi%20Jay%2C%20ik%20wil%20graag%20een%20beurt%20plannen." target="_blank" rel="noopener">stuur een WhatsApp</a>.</p>
     </div>
 
-    <div class="planner" data-planner-stappen>
-      <div>
-        <div class="planner-stap" data-rev>
-          <div class="stapkop"><span class="nr">1</span><h2>Welke beurt?</h2></div>
-          <div class="beurt-keuze" data-beurt-keuze>
-            <label><input type="radio" name="beurt" value="controle"><span class="titel">Controlebeurt</span><span class="dim">race, MTB of gravel</span><span class="duurprijs"><span>75 min</span><b>€ 69</b></span></label>
-            <label><input type="radio" name="beurt" value="onderhoud" checked><span class="titel">Onderhoudsbeurt</span><span class="dim">race, MTB of gravel</span><span class="duurprijs"><span>180 min</span><b>€ 159</b></span></label>
-            <label><input type="radio" name="beurt" value="ebike"><span class="titel">E-bike beurt</span><span class="dim">elke e-bike</span><span class="duurprijs"><span>90 min</span><b>€ 85</b></span></label>
-          </div>
-          <p class="hint">Prijzen exclusief materiaal. Twijfel je welke beurt past? <a href="werkplaats.html" style="text-decoration: underline; font-weight: 600">Bekijk wat er in elke beurt zit</a> of app Jay even.</p>
-        </div>
-
-        <div class="planner-stap" data-rev>
-          <div class="stapkop"><span class="nr">2</span><h2>Welke dag?</h2></div>
-          <div class="kalender" data-kalender aria-live="polite">
-            <p class="dim">De agenda laadt. Lukt dat niet, bel dan 06 28828966 of stuur een WhatsApp, dan plannen we het samen in.</p>
-          </div>
-        </div>
-
-        <div class="planner-stap" data-stap-tijd hidden>
-          <div class="stapkop"><span class="nr">3</span><h2>Hoe laat breng je hem?</h2></div>
-          <p class="hint">Je fiets gaat direct de werkplaats in. De tijd hieronder is de brengtijd; de ophaaltijd zie je rechts.</p>
-          <div class="tijden" data-tijden aria-live="polite"></div>
-        </div>
-
-        <div class="planner-stap" data-stap-gegevens hidden>
-          <div class="stapkop"><span class="nr">4</span><h2>Je gegevens</h2></div>
-          <form class="form" data-boekform novalidate>
-            <div class="rij">
-              <div class="veld"><label for="naam">Naam</label><input id="naam" name="naam" type="text" autocomplete="name" required><span class="fout" hidden>Vul je naam in.</span></div>
-              <div class="veld"><label for="telefoon">Telefoon</label><input id="telefoon" name="telefoon" type="tel" autocomplete="tel" required><span class="fout" hidden>Vul je telefoonnummer in.</span></div>
-            </div>
-            <div class="rij">
-              <div class="veld"><label for="email">E-mail (voor de bevestiging)</label><input id="email" name="email" type="email" autocomplete="email" required><span class="fout" hidden>Controleer je e-mailadres.</span></div>
-              <div class="veld"><label for="fiets">Merk en model van je fiets</label><input id="fiets" name="fiets" type="text" placeholder="Bijv. Canyon Grail, Trek Fuel EX"></div>
-            </div>
-            <div class="rij">
-              <div class="veld"><label for="type">Type fiets</label><select id="type" name="type"><option>Racefiets</option><option>Gravelbike</option><option>Mountainbike</option><option>E-bike</option><option>Anders</option></select></div>
-              <div class="veld"><label for="halen">Haal- en brengservice</label><select id="halen" name="halen"><option>Nee, ik breng hem zelf</option><option>Ja, graag ophalen (Jay belt voor de details)</option></select></div>
-            </div>
-            <div class="veld"><label for="opmerking">Wat moet Jay weten? (optioneel)</label><textarea id="opmerking" name="opmerking" placeholder="Bijv. schakelt slecht in de kleinste versnellingen, rem piept, tubeless sealant vervangen"></textarea></div>
-            <button class="knop knop-vol knop-groot" type="submit">Bevestig je afspraak</button>
-            <p class="hint">Na het bevestigen krijg je een afspraaknummer en bevestigt Jay je afspraak binnen één werkdag per e-mail. Annuleren of verzetten kan gratis tot 24 uur vooraf, via telefoon of WhatsApp.</p>
-          </form>
-        </div>
-      </div>
-
-      <aside class="samenvatting" data-samenvatting aria-label="Je keuze">
-        <h2>Je afspraak</h2>
-        <dl>
-          <div><dt>Beurt</dt><dd><span data-s-beurt>Nog niet gekozen</span><br><small class="dim" data-s-prijs></small></dd></div>
-          <div><dt>Dag</dt><dd data-s-datum>Kies een dag</dd></div>
-          <div><dt>Brengen</dt><dd data-s-tijd>Kies een tijd</dd></div>
-        </dl>
-        <div class="klaar-om" hidden><small>Je fiets staat klaar om</small><strong data-s-klaar></strong></div>
-        <button class="knop knop-vol" type="button" data-s-knop disabled>Vul je gegevens in</button>
-        <p class="hint">Liever binnenlopen zonder afspraak? Kan ook, kijk bij de <a href="contact.html" style="text-decoration: underline">openingstijden</a>. Voor spoed: 06 28828966.</p>
-        <p class="powered">Powered by Mettafel</p>
-      </aside>
+    <div class="portaal-beurten" data-rev data-stagger>
+      <p class="bijschrift">Welke beurt past bij je fiets?</p>
+      <article class="portaal-beurt" id="controle" data-beurt="controle">
+        <div><h3>Controlebeurt</h3><span>race, MTB of gravel · 75 min</span></div><strong>€ 69</strong>
+      </article>
+      <article class="portaal-beurt" id="onderhoud" data-beurt="onderhoud">
+        <div><h3>Onderhoudsbeurt</h3><span>race, MTB of gravel · 180 min</span></div><strong>€ 159</strong>
+      </article>
+      <article class="portaal-beurt" id="ebike" data-beurt="ebike">
+        <div><h3>Onderhoudsbeurt e-bike</h3><span>elke e-bike · 90 min</span></div><strong>€ 85</strong>
+      </article>
+      <p class="hint">Prijzen exclusief materiaal. <a href="werkplaats.html" style="text-decoration: underline; font-weight: 600">Bekijk wat er in elke beurt zit</a></p>
     </div>
-
-    <noscript>
-      <div class="bevestiging" style="margin-top: 2rem">
-        <h2>Plannen zonder JavaScript</h2>
-        <p>De online planner heeft JavaScript nodig. Stuur je wens als WhatsApp-bericht, dan plant Jay hem in:</p>
-        <a class="knop knop-vol" href="https://wa.me/31628828966?text=Hoi%20Jay%2C%20ik%20wil%20een%20beurt%20plannen.%20Beurt%3A%20...%20Dag%3A%20...%20Tijd%3A%20...%20Fiets%3A%20...">Stuur je planwens via WhatsApp</a>
-      </div>
-    </noscript>
   </div>
 </section>
 

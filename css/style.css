@@ -892,3 +892,28 @@ body.mand-open { overflow: hidden; }
 .leveroptie .prijsje { font-style: normal; color: var(--merk); }
 .leveroptie { padding-right: 3rem; }
 .leveroptie:has(input:checked)::after { content: ''; position: absolute; right: 1rem; top: 1rem; width: 22px; height: 22px; border-radius: 50%; background: var(--inkt) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12.5l4.5 4.5L19 7.5'/%3E%3C/svg%3E") center / 13px no-repeat; }
+
+/* ---- plannerpagina: voorportaal van de online reparatieplanner (CycleSoftware) ---- */
+.portaal { display: grid; grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: clamp(1.4rem, 3vw, 2.6rem); align-items: start; }
+.portaal-kaart { position: relative; overflow: hidden; background: var(--inkt); color: #fff; border-radius: var(--radius-groot); padding: clamp(1.6rem, 3vw, 2.4rem); display: grid; gap: 1.4rem; box-shadow: var(--schaduw-2); }
+.portaal-kaart .kopje { display: flex; justify-content: space-between; align-items: center; gap: 1rem; flex-wrap: wrap; }
+.portaal-kaart .kopje h2 { font-size: clamp(1.8rem, 3vw, 2.4rem); }
+.portaal-kaart .badge { font-size: .74rem; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; background: rgba(143, 211, 254, .14); color: var(--cta); padding: .35rem .65rem; border-radius: 4px; }
+.portaal-stappen { display: grid; gap: 1.1rem; }
+.portaal-stappen li { display: flex; gap: 1rem; align-items: flex-start; }
+.portaal-stappen .nr { flex: none; width: 40px; height: 40px; border-radius: 50%; display: grid; place-items: center; font-family: var(--display); font-weight: 800; font-size: 1.25rem; color: var(--inkt); background: var(--cta); box-shadow: 0 0 0 4px rgba(143, 211, 254, .16); }
+.portaal-stappen strong { display: block; font-size: 1.05rem; }
+.portaal-stappen span:not(.nr) { color: var(--dim-op-donker); font-size: .95rem; }
+.portaal-kaart .gekozen { margin: 0; padding: .7rem .9rem; border-radius: var(--radius); background: rgba(143, 211, 254, .12); border: 1px solid rgba(143, 211, 254, .35); font-weight: 600; }
+.portaal-kaart .knop-groot { justify-self: start; }
+.portaal-kaart .noot { color: var(--dim-op-donker); font-size: .9rem; margin: 0; }
+.portaal-kaart .noot a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+.portaal-beurten { display: grid; gap: .7rem; }
+.portaal-beurten .bijschrift { font-size: .78rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; color: var(--merk); margin: 0 0 .2rem; }
+.portaal-beurt { display: flex; justify-content: space-between; align-items: center; gap: 1rem; background: #fff; border: 1.5px solid var(--lijn); border-radius: var(--radius-groot); padding: 1.05rem 1.25rem; transition: border-color .25s var(--vlot), box-shadow .25s var(--vlot); }
+.portaal-beurt h3 { font-size: 1.25rem; }
+.portaal-beurt span { color: var(--dim); font-size: .9rem; }
+.portaal-beurt strong { font-family: var(--display); font-size: 1.9rem; line-height: 1; color: var(--inkt); }
+.portaal-beurt.gekozen { border-color: var(--tweede); box-shadow: 0 0 0 3px rgba(47, 107, 255, .14); }
+.portaal-beurten .hint { margin-top: .3rem; }
+@media (max-width: 900px) { .portaal { grid-template-columns: 1fr; } .portaal-kaart .knop-groot { justify-self: stretch; justify-content: center; } }
