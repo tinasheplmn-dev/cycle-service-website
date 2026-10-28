@@ -2,4 +2,7 @@ User-agent: *
 Allow: /
 Disallow: /beheer
 Disallow: /api/
+Disallow: /afrekenen.html
+Disallow: /*?bewerken=
+
 Sitemap: https://www.cycle-service.nl/sitemap.xml

@@ -1,10 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://www.cycle-service.nl/</loc><lastmod>2026-09-24</lastmod><priority>1.0</priority></url>
-  <url><loc>https://www.cycle-service.nl/werkplaats.html</loc><lastmod>2026-09-24</lastmod><priority>0.9</priority></url>
-  <url><loc>https://www.cycle-service.nl/planner.html</loc><lastmod>2026-09-24</lastmod><priority>0.9</priority></url>
-  <url><loc>https://www.cycle-service.nl/fietsen.html</loc><lastmod>2026-10-19</lastmod><priority>0.7</priority></url>
-  <url><loc>https://www.cycle-service.nl/over.html</loc><lastmod>2026-09-24</lastmod><priority>0.6</priority></url>
-  <url><loc>https://www.cycle-service.nl/contact.html</loc><lastmod>2026-09-24</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.cycle-service.nl/voorwaarden.html</loc><lastmod>2026-10-19</lastmod><priority>0.3</priority></url>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">
+  <url><loc>https://www.cycle-service.nl/</loc><lastmod>2026-10-28</lastmod><priority>1.0</priority></url>
+  <url><loc>https://www.cycle-service.nl/werkplaats.html</loc><lastmod>2026-10-28</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.cycle-service.nl/planner.html</loc><lastmod>2026-10-28</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.cycle-service.nl/fietsen.html</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.cycle-service.nl/contact.html</loc><lastmod>2026-10-28</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.cycle-service.nl/over.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority></url>
+  <url><loc>https://www.cycle-service.nl/voorwaarden.html</loc><lastmod>2026-10-28</lastmod><priority>0.3</priority></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-arid-carbon-r-m.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-mondraker-arid-m-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-arid-carbon-r-custom-l.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-mondraker-arid-l-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-f-podium-rr-custom-l.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-mondraker-fpodium-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-berria-belador-pro-57.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-berria-57-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-berria-belador-pro-55.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-berria-55-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-scott-addict-rc-30-54.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-scott-addict-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-superior-iblox-63-l.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-superior-iblox-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-qmotiv.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/fiets-qmotiv-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-gemini-rigel-gravel-road.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-gemini-rigel-chainring-gravel-road-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-gemini-rigel-mtb.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-gemini-rigel-chainring-mtb-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-gemini-waessat-mtb.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-gemini-waessat-handlebar-mtb-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-f-podium-rr-sl.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-f-podium-rr-sl-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-f-podium-rr.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-f-podium-rr-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-f-podium-r.html</loc><lastmod>2026-10-28</lastmod><priority>0.6</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-f-podium-r-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-podium-rr-sl.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-podium-rr-sl-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-podium-rr.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-podium-rr-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-podium-s.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-podium-s-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-arid-carbon-rr-sl.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-arid-carbon-rr-sl-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-arid-carbon-rr.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-arid-carbon-rr-800.webp</image:loc></image:image></url>
+  <url><loc>https://www.cycle-service.nl/shop-mondraker-arid-carbon-r.html</loc><lastmod>2026-10-28</lastmod><priority>0.4</priority><image:image><image:loc>https://www.cycle-service.nl/assets/img/shop-mondraker-arid-carbon-r-800.webp</image:loc></image:image></url>
 </urlset>

@@ -98,6 +98,7 @@
     var doel = parseFloat(doelTekst.replace(',', '.'));
     if (isNaN(doel)) return;
     var komma = doelTekst.indexOf(',') !== -1;
+    var decimalen = komma ? doelTekst.split(',')[1].length : 0;
     if (kalm) { el.textContent = doelTekst; return; }
     var start = null;
     var duur = 1600;
@@ -106,7 +107,7 @@
       var p = Math.min((t - start) / duur, 1);
       var z = 1 - Math.pow(1 - p, 3);
       var n = doel * z;
-      el.textContent = komma ? n.toFixed(1).replace('.', ',') : Math.round(n);
+      el.textContent = komma ? n.toFixed(decimalen).replace('.', ',') : Math.round(n);
       if (p < 1) requestAnimationFrame(stapje);
       else el.textContent = doelTekst;
     }

@@ -6,6 +6,7 @@
   var SLEUTEL = 'cs-mand-v1';
   var euro = function (n) { return '€ ' + Number(n).toLocaleString('nl-NL', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 }); };
   var ico = function (naam) { return '<svg class="ico" aria-hidden="true"><use href="assets/iconen.svg#i-' + naam + '"/></svg>'; };
+  var fotoUrl = function (f) { return !f ? '' : f.indexOf('/') > -1 ? f : 'assets/img/' + f; };
   var tekst = function (x) { return String(x == null ? '' : x).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); };
 
   /* ---------- opslag ---------- */
@@ -96,7 +97,7 @@
     regels.innerHTML = m.map(function (r) {
       var max = r.categorie === 'onderdelen' ? 10 : 1, k = tekst(sleutel(r));
       return '<div class="mand-regel">' +
-        (r.foto ? '<img src="assets/img/' + tekst(r.foto) + '" alt="" width="96" height="72">' : '<span class="mand-foto-leeg">' + ico('fiets') + '</span>') +
+        (r.foto ? '<img src="' + tekst(fotoUrl(r.foto)) + '" alt="" width="96" height="72">' : '<span class="mand-foto-leeg">' + ico('fiets') + '</span>') +
         '<div class="mand-info"><strong>' + tekst(r.merk) + ' ' + tekst(r.naam) + '</strong>' + (r.maat ? '<small>' + tekst(r.maat) + '</small>' : '') +
           '<div class="mand-aantal">' +
             (max > 1 ? '<button type="button" data-regel="' + k + '" data-actie="min" aria-label="Eén minder">−</button><output>' + r.aantal + '</output><button type="button" data-regel="' + k + '" data-actie="plus" aria-label="Eén meer">+</button>' : '<small>1 stuk</small>') +
@@ -116,7 +117,7 @@
     var info = product(knop.dataset.inMand);
     if (!info) return;                       /* geen catalogus op deze pagina: de WhatsApp-link doet zijn werk */
     e.preventDefault();
-    var kaart = knop.closest('.fiets');
+    var kaart = knop.closest('.fiets, [data-product]');
     var keuzes = (info.opties || []).map(function (o, i) {
       var s = kaart && kaart.querySelector('select[data-optie="' + i + '"]');
       return s ? s.value : o.waarden[0];

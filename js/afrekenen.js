@@ -45,7 +45,7 @@
     $('[data-checkout-stappen]').hidden = false;
     $('[data-leeg]').hidden = true;
     lijst.innerHTML = m.map(function (r) {
-      return '<li><img src="assets/img/' + tekst(r.foto) + '" alt="" width="72" height="54"><div><strong>' + tekst(r.merk) + ' ' + tekst(r.naam) + '</strong><small>' + (r.maat ? tekst(r.maat) + ' · ' : '') + r.aantal + '×</small></div><span>' + euro(r.prijs * r.aantal) + '</span></li>';
+      return '<li><img src="' + tekst(String(r.foto || '').indexOf('/') > -1 ? r.foto : 'assets/img/' + r.foto) + '" alt="" width="72" height="54"><div><strong>' + tekst(r.merk) + ' ' + tekst(r.naam) + '</strong><small>' + (r.maat ? tekst(r.maat) + ' · ' : '') + r.aantal + '×</small></div><span>' + euro(r.prijs * r.aantal) + '</span></li>';
     }).join('');
     var sub = m.reduce(function (s, r) { return s + r.prijs * r.aantal; }, 0);
 

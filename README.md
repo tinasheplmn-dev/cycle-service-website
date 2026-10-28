@@ -27,6 +27,7 @@ Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenro
 | `voorwaarden.html` | Bestellen, levering, retourbeleid, herroepingsbeleid met modelformulier, wettelijke garantie |
 | `over.html` | Het verhaal van Jay, hoe hij werkt, de zaak |
 | `contact.html` | Adres, kaart, openingstijden, contactformulier, veelgestelde vragen (met FAQ-structured data) |
+| `shop-<id>.html` | Eén pagina per product: foto's, prijs, voorraad, keuzes, specificaties, omschrijving, gerelateerde producten, Product-structured data |
 
 De subpagina's worden gegenereerd uit `_bouw/paginas/*.html` plus de gedeelde kop en voet (`_bouw/kop.html`, `_bouw/voet.html`):
 
@@ -34,7 +35,9 @@ De subpagina's worden gegenereerd uit `_bouw/paginas/*.html` plus de gedeelde ko
 node _bouw/bouw.mjs
 ```
 
-`index.html` is handgeschreven. Pas je het menu of de footer aan, doe dat dan in de partials én in `index.html`.
+`index.html` is handgeschreven, maar de kop, de voet, de uitgelichte fietsen en de catalogus worden door de bouwstap ingevuld (tussen de markeringen `<!-- kop:start -->` enzovoort). Menu of footer pas je dus alleen in de partials aan. De bouwstap maakt ook de productpagina's en `sitemap.xml`.
+
+Elke tekst en elke foto heeft een vaste sleutel (`data-cms="home-12"`), zodat Jay hem in het beheer kan aanpassen. Voeg je een nieuwe sectie toe, draai dan eerst `node _bouw/annoteer.mjs` en daarna `node _bouw/bouw.mjs`. Bestaande sleutels blijven staan.
 
 Geschrapt ten opzichte van de oude site: de koffiebar-pagina (opdracht: daar komt niemand speciaal voor; de koffie wordt één keer genoemd bij de zaak), de losse impressie- en galerijpagina's (beeld zit nu in de secties) en PayPal (de webshop zelf is wel nagebouwd, zie hieronder).
 
@@ -42,7 +45,7 @@ Geschrapt ten opzichte van de oude site: de koffiebar-pagina (opdracht: daar kom
 
 Winkelwagen en checkout zijn compleet. Alleen de betaalprovider moet nog gekoppeld worden.
 
-**Catalogus.** Alle producten staan in `_bouw/producten.json`: id, merk, naam, categorie (race, gravel, mtb, ebike, onderdelen), staat (nieuw, occasion, demo), prijs, voorraad, levering (`afhalen` of `verzenden`), foto, spec en eventueel `opties`. Na een wijziging draai je `node _bouw/bouw.mjs`; de kaarten, filters en de catalogus in de pagina's worden dan opnieuw gemaakt. De server leest hetzelfde bestand en rekent elke bestelling zelf opnieuw uit, dus een prijs in de browser aanpassen werkt niet.
+**Catalogus.** Jay beheert de producten in het beheer (zie hieronder); die staan dan in `DATA_MAP/producten.json`. `_bouw/producten.json` is de beginstand en de bron voor de statische versie. Velden: id, merk, naam, categorie (race, gravel, mtb, ebike, onderdelen), staat (nieuw, occasion, demo), prijs, voorraad, levering (`afhalen` of `verzenden`), foto, spec en eventueel `opties`. Voor de statische versie draai je na een wijziging `node _bouw/bouw.mjs`. De server leest de catalogus live en rekent elke bestelling zelf opnieuw uit, dus een prijs in de browser aanpassen werkt niet.
 
 **Varianten.** `opties` is een lijst zoals `[{"naam": "Kleur", "waarden": ["Team Issue"]}, {"naam": "Maat", "waarden": ["S","M","L","XL"]}]`. Zet er alleen leverbare waarden in. Eén waarde verschijnt als vaste tekst, meerdere als keuzemenu. De server weigert een variant die niet in de lijst staat.
 
@@ -60,9 +63,52 @@ Winkelwagen en checkout zijn compleet. Alleen de betaalprovider moet nog gekoppe
 
 Een andere provider koppelen? Vervang dan `startBetaling` en `ververs` in `winkel.js`; de rest blijft gelijk.
 
-**Beheer.** Op `/beheer?token=...` staat het tabblad Bestellingen, met de regels, de uitvoering, de levering en de statusknoppen: nieuw, wacht op betaling, betaald, klaar om op te halen, verzonden, afgerond, geannuleerd. Een nieuwe bestelling gaat ook naar `MELDING_URL`.
+**Bestellingen** komen binnen in het beheer (tabblad Bestellingen) met de statusknoppen nieuw, wacht op betaling, betaald, klaar om op te halen, verzonden, afgerond en geannuleerd. Een nieuwe bestelling gaat ook naar `MELDING_URL`.
 
 **Zonder server** (bijvoorbeeld op GitHub Pages) werkt de winkelwagen gewoon. Bij het afrekenen opent dan een WhatsApp-bericht aan Jay met de bestelling.
+
+## Beheer voor Jay (sinds 28 oktober 2026)
+
+Op `/beheer` logt Jay in met een wachtwoord. Werkt alleen met de Node-server (niet op GitHub Pages). Wat hij kan:
+
+| Tabblad | Wat |
+|---|---|
+| Overzicht | Nieuwe bestellingen en berichten, aantal producten op voorraad, laatste wijzigingen |
+| Producten | Toevoegen, aanpassen en verwijderen. Prijs en voorraad direct in de lijst, ster = op de homepage (maximaal vier), volgorde met pijltjes. Per product: merk, naam, maat, categorie, staat, prijs, levering, hoofdfoto en tot acht extra foto's, korte zin, kenmerken, omschrijving, keuzes (maat, kleur), eigen titel en omschrijving voor Google, EAN |
+| Teksten en foto's | Opent een pagina in bewerkmodus (`/<pagina>?bewerken=1`): klik op een tekst om hem te typen (vet en cursief kan), klik op een foto om hem te vervangen en de beschrijving aan te passen. Per tekst of foto "Origineel terug". Kop en voet gelden op alle pagina's |
+| Prijzen en verzenden | De drie beurtprijzen op één plek: ze veranderen overal (alle pagina's, footer, structured data, meta-omschrijvingen). Verzenden aan of uit, gratis vanaf, kosten daaronder |
+| Vindbaar in Google | Per pagina titel en omschrijving met tekenteller en Google-voorbeeld |
+| Bestellingen, Berichten | Afhandelen met statusknoppen |
+| Instellingen | Wachtwoord wijzigen, eerdere versies terugzetten (de laatste 40 van producten en van teksten/prijzen/SEO), logboek van alles wat in het beheer is gebeurd |
+
+Foto's worden in de browser verkleind naar 1600 en 800 pixels breed en als WebP opgeslagen (Safari: JPEG). Ze komen in `DATA_MAP/media/` en staan op de site met `srcset`.
+
+Hoe het werkt: de server maakt elke pagina uit de gebouwde HTML plus `DATA_MAP/inhoud.json` (teksten, foto's, prijzen, SEO) en `DATA_MAP/producten.json`, en cachet het resultaat tot er iets verandert. Code: `server.js` (pagina's maken, beveiliging, cache), `beheer.js` (inloggen en API), `_beheer/` (dashboard en bewerkmodus), `_bouw/html.js` (HTML lezen en teksten veilig maken), `_bouw/sjabloon.js` en `_bouw/regio.js` (gedeeld met de bouwstap).
+
+## SEO
+
+- Per pagina: title, meta description, canonical, robots, Open Graph (ook `og:site_name`), Twitter-card, `theme-color`, webmanifest.
+- Structured data: BikeStore met adres, openingstijden, reviews en de beurten met actuele prijs (homepage), BreadcrumbList (alle pagina's), FAQPage (contact), ItemList (shop) en per product een Product met merk, prijs, voorraad, staat, retourbeleid (14 dagen) en verzending of afhalen.
+- Eigen pagina per product (`shop-<id>.html`) met een unieke titel en omschrijving, ingekort tot wat Google toont.
+- `sitemap.xml` komt live uit de catalogus (met productfoto's); `robots.txt` sluit beheer, API, afrekenen en de bewerkmodus uit.
+- Een verwijderd product geeft een echte 404 met een link naar de shop.
+
+## Beveiliging
+
+- Headers op elke pagina: Content-Security-Policy (alleen eigen scripts, geen inline JavaScript), `X-Content-Type-Options`, `X-Frame-Options: SAMEORIGIN`, `Referrer-Policy`, `Permissions-Policy`, `Cross-Origin-Opener-Policy`, `Cross-Origin-Resource-Policy` en HSTS op https.
+- Broncode, `_data`, `_bouw`, `.git` en verborgen bestanden worden nooit uitgeleverd; pad-trucs (`../`) geven 404.
+- Inloggen: wachtwoord met scrypt gehasht; het eerste wachtwoord moet bij de eerste keer inloggen vervangen worden (minstens 10 tekens). Sessie in een HttpOnly-cookie, SameSite=Strict, Secure op https, 12 uur geldig en 2 uur zonder activiteit. Na 5 mislukte pogingen is inloggen vanaf dat IP 15 minuten dicht, na 100 mislukte pogingen in totaal voor iedereen. Het IP komt van de proxy zelf (de laatste waarde in `X-Forwarded-For`), zodat een bezoeker het niet kan vervalsen.
+- Elke wijziging in het beheer vraagt een CSRF-token en een Origin van de eigen site.
+- Teksten uit het beheer gaan door een filter die alleen opmaak binnen een regel toelaat (vet, cursief, links naar http, mail of telefoon). Uploads moeten echt WebP, JPEG of PNG zijn (gecontroleerd op de inhoud, niet de naam), maximaal 6 MB, met een willekeurige bestandsnaam.
+- Limieten per IP: 600 verzoeken per minuut, 60 wijzigende verzoeken per minuut, 6 bestellingen en 5 contactberichten per 10 minuten. Honeypot in het contactformulier. Invoer wordt ingekort en ontdaan van HTML.
+- Getest op 28 oktober 2026: fout wachtwoord, geen sessie, geen CSRF-token, andere Origin, XSS in een tekst (`<script>`, `onerror`, `javascript:` ook met een tab ertussen), `$'` in een SEO-titel, een nep-afbeelding, te grote verzoeken (nette 413), een vervalst IP en pad-trucs (ook `/%2Fserver.js`) worden allemaal goed afgehandeld. Een onafhankelijke review vond negen punten; alle negen zijn opgelost.
+
+## Snelheid en mobiel
+
+- gzip en brotli voor HTML, CSS, JS, SVG en XML; ETags met 304; CSS wordt licht verkleind.
+- CSS, JS en de iconen krijgen een versie in de URL (`?v=`), zodat de browser ze een jaar mag bewaren en toch meteen de nieuwe versie ziet na een wijziging. Foto's 30 dagen, lettertypen en uploads een jaar.
+- Foto's: de zwaarste WebP's opnieuw gecomprimeerd (ongeveer 500 KB minder, geen zichtbaar verschil), kleinere varianten voor mobiel met `srcset` en `sizes`, `loading="lazy"` en `decoding="async"`, de hero-foto vooraf geladen per schermbreedte.
+- Gemeten op 390 breed: HTML 4 tot 9 KB gecomprimeerd, een subpagina in totaal ongeveer 105 KB, geen horizontale scroll, tikdoelen in footer, kruimelpad en kaarten minstens 44 px, keuzemenu's 16 px (geen inzoomen op iPhone). Het beheer werkt ook op een telefoon.
 
 ## Plannen via CycleSoftware (sinds 28 oktober 2026)
 
@@ -73,23 +119,7 @@ Afspraken lopen via de online reparatieplanner van CycleSoftware: https://accoun
 - **Alle "Plan je beurt"-knoppen** op de site wijzen naar `planner.html`. De kaart in de header toont geen "eerstvolgende vrije plek" meer (die kwam uit de eigen agenda).
 - **Biedt CycleSoftware later wel een widget of embedcode?** Vraag het na bij CycleSoftware. Dan kan het venster alsnog in `planner.html`.
 
-### De eigen planner (niet meer in gebruik)
-
-De eigen planner van Mettafel staat nog in `server.js` (`/api/agenda`, `/api/boeking`, tabblad Afspraken in beheer), maar geen pagina gebruikt hem meer. Hieronder de oude beschrijving.
-
-
-`server.js` is een Node-server zonder dependencies die de site serveert én de planner draait.
-
-- Agenda: dinsdag tot en met vrijdag, 7.30 tot 15.30 uur (8 uur per dag, zoals de eigenaar vroeg), starttijden per kwartier. Eén fiets tegelijk in de werkplaats: blokken overlappen nooit. Instelbaar bovenin `server.js` (`INSTELLINGEN.agenda`), inclusief sluitingsperiodes (`gesloten`) en de minimale tijd vooraf (18 uur).
-- Beurten met duur en prijs in `INSTELLINGEN.beurten`.
-- `GET /api/agenda?van=&tot=` geeft per dag de bezette blokken (zonder persoonsgegevens); de kalender toont alleen dagen waarop de gekozen beurt nog past.
-- `POST /api/boeking` valideert (werkdag, binnen de uren, geen overlap, niet te dichtbij) en slaat op in `_data/boeking.json`. `POST /api/aanvraag` is het contactformulier.
-- Beheer: `/beheer?token=...` toont de komende afspraken per dag met statusknoppen (nieuw, bevestigd, in de werkplaats, klaar, opgehaald, geannuleerd). Standaardwachtwoord `cycleservice`; zet in productie `BEHEER_TOKEN`.
-- Melding bij een nieuwe afspraak: zet `MELDING_URL` (webhook, bijvoorbeeld een Zapier- of Make-hook naar mail of WhatsApp). Zonder die instelling werkt alles, alleen zonder push.
-- De hero-kaart op de homepage haalt de eerstvolgende vrije plek live uit dezelfde agenda.
-- Fail-open: zonder JavaScript staat er een WhatsApp-knop met een voorgevuld planbericht.
-
-Getest op 24 september 2026: boeking van begin tot bevestiging, overlap wordt geweigerd, beheerpagina toont de afspraak. Testdata is verwijderd.
+De eigen planner van Mettafel (agenda, boekingen) is op 28 oktober 2026 uit `server.js` gehaald; geen pagina gebruikte hem nog. Hij staat in de git-geschiedenis als hij ooit terug moet.
 
 ## Lokaal draaien
 
@@ -97,13 +127,24 @@ Getest op 24 september 2026: boeking van begin tot bevestiging, overlap wordt ge
 node server.js
 ```
 
-Draait op http://localhost:8141 (of `PORT`). In de Claude-app: preview `cycleservice` in `.claude/launch.json`.
+Draait op http://localhost:8141 (of `PORT`). Het beheer staat op `/beheer`. Zonder `BEHEER_WACHTWOORD` maakt de server bij de eerste start een willekeurig wachtwoord; dat staat in de console en in `_data/eerste-wachtwoord.txt`. Bij de eerste keer inloggen kies je een eigen wachtwoord, en dan verdwijnt dat bestand.
 
 ## Uitrollen
 
-De site heeft een Node-host nodig vanwege de planner: Railway, Render, Fly of een VPS. Start `node server.js` met de omgevingsvariabelen `PORT`, `BEHEER_TOKEN` en optioneel `MELDING_URL`. `vercel.json` staat erbij voor het geval alleen het statische deel ergens moet staan, maar dan werkt de planner niet.
+De site heeft een Node-host nodig voor de webshop en het beheer: Railway, Render, Fly of een VPS. Start `node server.js` (Node 18 of nieuwer, geen dependencies) met:
 
-`_data/` moet op een persistente schijf staan (Railway volume of vergelijkbaar), anders zijn afspraken weg bij een herstart.
+| Variabele | Waarvoor |
+|---|---|
+| `PORT` | poort (de host zet hem meestal zelf) |
+| `BASIS_URL` | `https://www.cycle-service.nl`; zet https-cookies, HSTS en de Mollie-adressen aan |
+| `BEHEER_WACHTWOORD` | eerste wachtwoord voor het beheer (aanbevolen; zonder deze variabele staat een willekeurig wachtwoord in `DATA_MAP/eerste-wachtwoord.txt`) |
+| `DATA_MAP` | map op een persistente schijf (Railway volume), anders zijn bestellingen, producten, teksten en foto's weg na een herstart |
+| `MELDING_URL` | optioneel: webhook voor een melding bij een nieuwe bestelling of een nieuw bericht |
+| `BETAALPROVIDER`, `MOLLIE_API_KEY` | online betalen, zie "De webshop" |
+
+Wachtwoord vergeten: zet `BEHEER_WACHTWOORD` op een nieuw wachtwoord plus `BEHEER_RESET=1`, herstart, log in en haal `BEHEER_RESET` weer weg.
+
+Na een herstart moet Jay opnieuw inloggen (sessies staan in het geheugen). `vercel.json` en GitHub Pages tonen alleen de statische versie: zonder beheer en zonder online bestellen (de winkelwagen valt dan terug op WhatsApp).
 
 ## Domein en mail overzetten vanaf Jimdo
 
@@ -158,23 +199,22 @@ Let op: op de oude site wees de mailto-link naar `cycle-service@outlook.com`. Le
 
 ## Keuring en controle
 
-`node ~/.claude/skills/website-bouwen/scripts/keuring.mjs .` gaf 0 fouten. Waarschuwingen die bewust blijven staan: `opacity` op twee decoratieve SVG-elementen (het kettingblad en het touwtje van het label, geen tekst) en "geen JSON-LD" op subpagina's (die hebben nu BreadcrumbList; de contactpagina ook FAQPage). In de browser gemeten op 1440 en 390: geen horizontale scroll, hero-kop 115 px op desktop en 48 px op mobiel, bullets één regel, contrast van alle tekst minimaal 7:1 (de sterren en stapnummers zijn na de meting van goud en verloop naar navy en geel gezet). Reveals fail-open (`?foto=1` toont alles statisch).
+Op 28 oktober 2026 opnieuw: 0 fouten. Nieuwe waarschuwingen zijn verwacht: het beheer heeft geen canonical, og:image en structured data (het staat op noindex), en de sitemap mist `afrekenen.html` (ook noindex). `node ~/.claude/skills/website-bouwen/scripts/keuring.mjs .` gaf eerder ook 0 fouten. Waarschuwingen die bewust blijven staan: `opacity` op twee decoratieve SVG-elementen (het kettingblad en het touwtje van het label, geen tekst) en "geen JSON-LD" op subpagina's (die hebben nu BreadcrumbList; de contactpagina ook FAQPage). In de browser gemeten op 1440 en 390: geen horizontale scroll, hero-kop 115 px op desktop en 48 px op mobiel, bullets één regel, contrast van alle tekst minimaal 7:1 (de sterren en stapnummers zijn na de meting van goud en verloop naar navy en geel gezet). Reveals fail-open (`?foto=1` toont alles statisch).
 
 ## Open punten (bevestigen of aanleveren)
 
 1. **De 39 Google-reviews.** De bijlage met reviews zat niet bij de opdracht. Nu staan de zes reviews op de site die publiek leesbaar waren (drie met naam, drie zonder). Lever de rest als tekst met naam, dan zet ik ze in de reviewsectie op de homepage.
 2. **E-mailadres:** bevestigd op 19 oktober 2026: `info@cycle-service.nl` is leidend. Dat staat overal op de site. Let bij de domeinverhuizing op dat deze mailbox blijft werken.
-3. **Plannerwindow:** 7.30 tot 15.30 uur, dinsdag tot en met vrijdag, één fiets tegelijk. Klopt dat? Aanpassen kan bovenin `server.js`.
-4. **Sluiting 26 september tot 10 oktober** staat op de oude site en is in de planner geblokkeerd. Klopt dat voor 2026?
-5. **Naam van de tweede persoon** op de foto voor de deur (nu alleen Jay genoemd).
-6. **Instagram-handle** (bestaat, niet geverifieerd; nu alleen Facebook in de footer).
-7. **Fietsfoto's:** elke fiets heeft nu de foto van de huidige winkelpagina. De koppeling foto-fiets volgt de volgorde van die pagina; loop ze één keer na of elke foto bij de juiste fiets staat (vooral de twee Berria's en de twee Mondraker Arids lijken op elkaar).
-8. **Q'Motiv-logo** is maar 191 pixels breed, het enige formaat dat het merk aanbiedt. Op een scherm met hoge resolutie kan het iets zachter ogen. Vraag Q'Motiv om een SVG of een grotere PNG.
-9. **Betaalprovider:** Mollie aanvragen (KvK-nummer en bankrekening nodig), dan de drie omgevingsvariabelen zetten. Zie "De webshop".
-10. **Algemene voorwaarden, KvK-nummer en btw-nummer:** die stonden op de oude site alleen als Jimdo-placeholder. Voor een webshop moeten ze er wel staan. Lever ze aan, dan komen ze op `voorwaarden.html` en in de footer.
-11. **Verzendkosten onder € 100**, en of verzenden naar België of de rest van de EU moet kunnen. De oude site noemde alleen "gratis boven € 100" en "alleen EU".
-12. **Webshopprijzen en voorraad:** overgenomen van de oude shop op 19 oktober 2026. Loop ze na, vooral de Mondraker Arid Carbon R: die staat er twee keer, één keer op voorraad in de winkel (maat M, € 3.499) en één keer als nieuw model op bestelling (€ 4.499). Klopt dat?
-13. **Retouradres en terugbetaaltermijn:** het retourbeleid zegt "terugbetaling binnen 5 werkdagen" en het herroepingsbeleid "uiterlijk binnen veertien dagen". Dat botst niet, maar kies bij voorkeur één termijn.
-14. **Productfoto's:** de Mondraker- en Gemini-foto's zijn merkfoto's. Bevestig dat Jay ze als dealer mag gebruiken (meestal wel).
-15. **Tarieven** bevestigen vóór livegang (€ 69, € 159, € 85 en de toeslagen).
-16. **Bevestigingsmail:** de planner slaat op en meldt via webhook; automatische bevestigingsmail naar de klant (via `MELDING_URL` of een mail-API) is de logische volgende stap.
+3. **Naam van de tweede persoon** op de foto voor de deur (nu alleen Jay genoemd).
+4. **Instagram-handle** (bestaat, niet geverifieerd; nu alleen Facebook in de footer).
+5. **Fietsfoto's:** elke fiets heeft nu de foto van de huidige winkelpagina. De koppeling foto-fiets volgt de volgorde van die pagina; loop ze één keer na of elke foto bij de juiste fiets staat (vooral de twee Berria's en de twee Mondraker Arids lijken op elkaar).
+6. **Q'Motiv-logo** is maar 191 pixels breed, het enige formaat dat het merk aanbiedt. Op een scherm met hoge resolutie kan het iets zachter ogen. Vraag Q'Motiv om een SVG of een grotere PNG.
+7. **Betaalprovider:** Mollie aanvragen (KvK-nummer en bankrekening nodig), dan de drie omgevingsvariabelen zetten. Zie "De webshop".
+8. **Algemene voorwaarden, KvK-nummer en btw-nummer:** die stonden op de oude site alleen als Jimdo-placeholder. Voor een webshop moeten ze er wel staan. Lever ze aan, dan komen ze op `voorwaarden.html` en in de footer.
+9. **Verzendkosten onder € 100**, en of verzenden naar België of de rest van de EU moet kunnen. De oude site noemde alleen "gratis boven € 100" en "alleen EU".
+10. **Webshopprijzen en voorraad:** overgenomen van de oude shop op 19 oktober 2026. Loop ze na, vooral de Mondraker Arid Carbon R: die staat er twee keer, één keer op voorraad in de winkel (maat M, € 3.499) en één keer als nieuw model op bestelling (€ 4.499). Klopt dat?
+11. **Retouradres en terugbetaaltermijn:** het retourbeleid zegt "terugbetaling binnen 5 werkdagen" en het herroepingsbeleid "uiterlijk binnen veertien dagen". Dat botst niet, maar kies bij voorkeur één termijn.
+12. **Productfoto's:** de Mondraker- en Gemini-foto's zijn merkfoto's. Bevestig dat Jay ze als dealer mag gebruiken (meestal wel).
+13. **Tarieven** bevestigen vóór livegang (€ 69, € 159, € 85 en de toeslagen). Jay past ze daarna zelf aan in het beheer.
+14. **Bevestigingsmail:** bestellingen en berichten komen in het beheer en via `MELDING_URL`; een automatische bevestigingsmail naar de klant (via een mail-API) is de logische volgende stap.
+15. **Hosting met beheer:** kies een Node-host met een volume (Railway), zet de variabelen uit "Uitrollen" en geef Jay het eerste wachtwoord.
