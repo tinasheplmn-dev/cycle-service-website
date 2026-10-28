@@ -146,7 +146,7 @@ p { max-width: var(--meet); }
 }
 .rand-dik::before { padding: 2.5px; }
 
-/* ---- merk-bullets: kettingblad in een cirkel ---- */
+/* ---- merk-bullets: per punt een eigen icoon in een badge ---- */
 .bullets { display: grid; gap: .7rem; }
 .bullets li { display: flex; align-items: center; gap: .8rem; font-weight: 500; }
 .bullets .bol {
@@ -358,8 +358,10 @@ body.menu-open .merk { color: #fff; }
 .beurt .prijs strong { font-family: var(--display); font-size: 2.6rem; line-height: 1; }
 .beurt .prijs small { color: var(--dim); font-weight: 600; }
 .beurt .lijst { display: grid; gap: .35rem; font-size: .95rem; }
-.beurt .lijst li { display: flex; gap: .55rem; align-items: flex-start; }
-.beurt .lijst .ico { width: 18px; height: 18px; color: var(--tweede); margin-top: .25rem; flex: none; }
+.beurt .lijst { gap: .5rem; }
+.beurt .lijst li { display: flex; gap: .65rem; align-items: center; }
+.beurt .lijst .bol { flex: none; width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: rgba(47, 107, 255, .1); color: var(--merk); box-shadow: inset 0 0 0 1.5px rgba(47, 107, 255, .22); }
+.beurt .lijst .ico { width: 16px; height: 16px; }
 .beurt .actie { padding: 0 1.5rem 1.5rem; display: grid; gap: .5rem; }
 .beurt .actie .knop { width: 100%; }
 .beurt .actie a.meer { text-align: center; font-weight: 600; color: var(--merk); font-size: .95rem; text-decoration: underline; text-underline-offset: 3px; }
