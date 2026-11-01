@@ -144,6 +144,9 @@ Draait op http://localhost:8141 (of `PORT`). Het beheer staat op `/beheer`. Zond
 
 ## Uitrollen
 
+**Live op Railway sinds 1 november 2026:** https://cycle-service-website-production.up.railway.app (beheer op `/beheer`). Project `noble-benevolence`, dienst `cycle-service-website`, regio EU West (Amsterdam), volume op `/data`, variabelen `DATA_MAP=/data`, `NODE_ENV=production`, `PORT=8080`, `BASIS_URL`. Elke push naar `main` rolt automatisch uit. Het eerste wachtwoord staat in de deploy-log van de eerste uitrol en in `/data/eerste-wachtwoord.txt`. Na de domeinverhuizing: eigen domein toevoegen bij Settings → Networking en `BASIS_URL` op `https://www.cycle-service.nl` zetten.
+
+
 De site heeft een Node-host nodig voor de webshop en het beheer: Railway, Render, Fly of een VPS. Start `node server.js` (Node 18 of nieuwer, geen dependencies) met:
 
 | Variabele | Waarvoor |
