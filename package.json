@@ -1,0 +1,12 @@
+{
+  "name": "cycle-service-website",
+  "private": true,
+  "description": "Website, webshop en beheer van Cycle Service Sint-Oedenrode. Geen dependencies.",
+  "scripts": {
+    "start": "node server.js",
+    "bouw": "node _bouw/bouw.mjs"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
