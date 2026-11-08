@@ -299,7 +299,7 @@ body.menu-open .merk { color: #fff; }
 @media (max-width: 1020px) {
   .hero .wrap { grid-template-columns: 1fr; }
   .plankaart { justify-self: start; width: min(100%, 520px); }
-  .hero-beeld::after { background: linear-gradient(180deg, rgba(11, 23, 48, .66) 0%, rgba(11, 23, 48, .9) 45%, rgba(11, 23, 48, .97) 100%); }
+  .hero-beeld::after { background: linear-gradient(180deg, rgba(11, 23, 48, .93) 0%, rgba(11, 23, 48, .95) 45%, rgba(11, 23, 48, .98) 100%); }
   .hero-beeld img { object-position: 70% 30%; }
 }
 @media (max-width: 640px) {
