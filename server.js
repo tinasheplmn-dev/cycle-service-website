@@ -440,6 +440,11 @@ const server = http.createServer(async (req, res) => {
   let pad;
   try { pad = decodeURIComponent(url.pathname); } catch { res.writeHead(400); return res.end(); }
   const ip = ipVan(req);
+  /* het kale domein stuurt door naar www; daar staat het certificaat en de canonieke site */
+  if (String(req.headers.host || '').toLowerCase().split(':')[0] === 'cycle-service.nl') {
+    res.writeHead(301, { Location: 'https://www.cycle-service.nl' + req.url, 'Cache-Control': 'public, max-age=86400' });
+    return res.end();
+  }
   try {
     if (!binnenLimiet('alles:' + ip, 600, 60000)) { res.writeHead(429, { 'Retry-After': '60' }); return res.end('Te veel verzoeken. Probeer het over een minuut opnieuw.'); }
     if (req.method !== 'GET' && req.method !== 'HEAD' && !binnenLimiet('post:' + ip, 60, 60000)) return json(res, 429, { ok: false, fout: 'Te veel verzoeken. Probeer het over een minuut opnieuw.' });
