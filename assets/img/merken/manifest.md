@@ -36,3 +36,10 @@ Trust badges voor de dealerpagina. Alleen echte, gedownloade logo's — niets na
 
 ## Niet gelukt
 Geen van de vijf merken is volledig mislukt. Enige aandachtspunt: **Q'Motiv** (zie hierboven) levert alleen een logo van 191×40 px, onder de gevraagde minimale breedte van 400px — er bestaat kennelijk geen grotere/vector-versie in publieke omloop.
+
+## 6. Orbea — `orbea.png`
+- **Bron:** door de opdrachtgever aangeleverd op 10 november 2026 (WebP, 2000 × 2000, transparant).
+- **Bewerking:** witruimte weggesneden en geschaald naar 440 × 200 px PNG met transparante achtergrond. Niets nagetekend.
+- **Formaat:** PNG, 440 × 200 (verhouding 2,2 : 1), zwart met transparantie — werkt dus ook op een donkere achtergrond via `filter: brightness(0) invert(1)`.
+- **Let op:** dit is het enige gestapelde logo in de rij (maantje bóven het woordmerk). Daarom krijgt het in `css/style.css` een eigen hoogte (58 px, compact 44 px), zodat de letters even groot ogen als bij de andere merken.
+- **Aanbevolen:** vraag Orbea om een officiële SVG of een horizontale variant; dan kan deze uitzondering in de CSS weg.

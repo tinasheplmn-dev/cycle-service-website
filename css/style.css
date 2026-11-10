@@ -993,3 +993,8 @@ body.mand-open { overflow: hidden; }
 .kaart-toestemming .knop-navy { background: var(--cta); color: var(--inkt); border-color: var(--cta); }
 .kaart-toestemming .klein { font-size: .85rem; color: var(--dim-op-donker); max-width: 34ch; }
 .kaart-toestemming a { color: #fff; text-decoration: underline; }
+
+/* Orbea staat als enige gestapeld (maantje boven het woordmerk); iets hoger zodat de letters
+   even groot ogen als bij de andere merken */
+.merken img[alt="Orbea"] { height: 58px; }
+.merkenband.compact .merken img[alt="Orbea"] { height: 44px; }

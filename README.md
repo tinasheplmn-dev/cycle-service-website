@@ -1,6 +1,6 @@
 # Cycle Service Sint-Oedenrode: website en onderhoudsplanner
 
-Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 11, Sint-Oedenrode. Vervangt de Jimdo-site op cycle-service.nl. Gebouwd op 24 september 2026 met de website-bouwen skill. Dossier en onderzoek: `_bouw/dossier.md`.
+Nieuwe site voor Cycle Service (Jay van der Kallen), Handelsweg 1-A, Sint-Oedenrode. Vervangt de Jimdo-site op cycle-service.nl. Gebouwd op 24 september 2026 met de website-bouwen skill. Dossier en onderzoek: `_bouw/dossier.md`.
 
 ## Het concept
 
@@ -173,7 +173,7 @@ De eigenaar stelt dit als eerste eis: het domein moet mee en de mailboxen moeten
 3. **Mail eerst regelen, vóór de verhuizing.** De mailboxen van Jimdo (`@cycle-service.nl`) stoppen zodra het Jimdo-abonnement stopt. Maak dus eerst nieuwe mailboxen aan bij de nieuwe partij (TransIP e-mail, Google Workspace of Microsoft 365), maak dezelfde adressen aan (in elk geval `info@cycle-service.nl`), en laat Jay zijn oude mail exporteren (IMAP-kopie via Mail of Outlook). Zet daarna de MX-records op de nieuwe mailprovider. Tip: doe dit op een moment dat er weinig mail binnenkomt en houd het Jimdo-abonnement nog een maand aan als vangnet.
 4. **DNS voor de site:** A- of CNAME-record naar de host van `server.js` (Railway geeft een CNAME-doel). `www` naar hetzelfde. SSL regelt de host.
 5. **Controleer** na de overstap: mail sturen én ontvangen op `info@cycle-service.nl`, de site op www en zonder www, en de planner (`/api/agenda`).
-6. **Google-bedrijfsprofiel:** website-URL blijft gelijk; controleer of de openingstijden daar gelijk zijn aan de site (Google zegt "gesloten" op maandag en donderdag, de site zegt "op afspraak").
+6. **Google-bedrijfsprofiel:** website-URL blijft gelijk; zet de openingstijden daar gelijk aan de site (ma 18.00-21.00, di t/m vr 8.00-17.30, za 9.00-13.00, zo gesloten) en pas ook het huisnummer aan naar 1-A.
 
 Let op: op de oude site wees de mailto-link naar `cycle-service@outlook.com`. Leidend is `info@cycle-service.nl` (bevestigd op 19 oktober 2026); zorg dat die mailbox na de verhuizing werkt.
 

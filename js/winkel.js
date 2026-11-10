@@ -45,7 +45,7 @@
         '<div class="mand-regels" data-mand-regels></div>' +
         '<footer class="mand-voet" data-mand-voet>' +
           '<div class="mand-totaal"><span>Subtotaal</span><strong data-mand-totaal></strong></div>' +
-          '<p class="mand-noot">Fietsen haal je rijklaar afgesteld op in de winkel aan de Handelsweg 11.</p>' +
+          '<p class="mand-noot">Fietsen haal je rijklaar afgesteld op in de winkel aan de Handelsweg 1-A.</p>' +
           '<a class="knop knop-vol" href="afrekenen.html">Afrekenen ' + ico('pijl') + '</a>' +
           '<button type="button" class="knop knop-lijn" data-mand-sluit>Verder winkelen</button>' +
           '<p class="powered">Webshop powered by Mettafel</p>' +

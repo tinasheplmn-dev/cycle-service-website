@@ -14,7 +14,7 @@ Onderzoek 24 september 2026: huidige site (Jimdo, via browser), Google Maps, Fac
 - Eén jaar garantie na elke onderhoudsbeurt op perfect rollen, remmen en schakelen, slijtagedelen uitgezonderd (cycle-service.nl/werkplaats)
 - Vaste prijzen met vaste duur: controlebeurt 75 min € 69, onderhoudsbeurt 180 min € 159, e-bike 90 min € 85 (site + opdracht eigenaar)
 - Haal- en brengservice (site + review-snippet "Fiets werd thuis opgehaald en netjes weer thuis afgeleverd")
-- Open vanaf 7.30 uur op dinsdag, woensdag en vrijdag: fiets brengen vóór je werk
+- Open vanaf 8.00 uur op dinsdag tot en met vrijdag: fiets brengen vóór je werk
 - Sinds 2020; eigen winkel, werkplaats en webshop; merken Mondraker, Berria, Superior, Q'Motiv, Gemini
 
 ## Huisstijl nu
@@ -65,10 +65,10 @@ Het kettingblad dat draait met de scroll (groot, dun, navy op wit, deels buiten 
 
 ## Gegevens
 
-- Cycle Service, Handelsweg 11, 5492 NL Sint-Oedenrode
+- Cycle Service, Handelsweg 1-A, 5492 NL Sint-Oedenrode
 - Telefoon 06 28828966 (tel:+31628828966), WhatsApp wa.me/31628828966
 - E-mail: de site toont info@cycle-service.nl maar de mailto-link wijst naar cycle-service@outlook.com. Op de site zetten we info@cycle-service.nl (het domeinadres) en melden het als open punt.
-- Openingstijden (site): ma op afspraak, di 7.30-17.30, wo 7.30-17.30, do op afspraak, vr 7.30-20.00, za 9.00-13.00, zo gesloten
+- Openingstijden (site, per 10 november 2026): ma 18.00-21.00, di t/m vr 8.00-17.30, za 9.00-13.00, zo gesloten
 - Sluiting: 26 september tot 10 oktober (2026) staat op de huidige site; in de planner geblokkeerd, te bevestigen
 - Planner (opdracht eigenaar): dinsdag tot en met vrijdag, 8 uur per dag. Ingesteld op 7.30 tot 15.30, aanpasbaar in `server.js`
 - Google: 5,0 uit 39 reviews, categorie fietsenwinkel. Reviewlink: https://www.google.com/maps?q=Cycle+Service+Sint-Oedenrode

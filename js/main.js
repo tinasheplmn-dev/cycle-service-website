@@ -6,8 +6,7 @@
   'use strict';
 
   /* openingstijden: [open, dicht] in minuten, per weekdag (0 = zondag) */
-  var TIJDEN = { 2: [450, 1050], 3: [450, 1050], 5: [450, 1200], 6: [540, 780] };
-  var OPAFSPRAAK = { 1: true, 4: true };
+  var TIJDEN = { 1: [1080, 1260], 2: [480, 1050], 3: [480, 1050], 4: [480, 1050], 5: [480, 1050], 6: [540, 780] };
   var DAGEN = ['zondag', 'maandag', 'dinsdag', 'woensdag', 'donderdag', 'vrijdag', 'zaterdag'];
   var tijd = function (m) { return Math.floor(m / 60) + '.' + String(m % 60).padStart(2, '0'); };
 
@@ -85,7 +84,7 @@
   var knop = vak.querySelector('[data-kaart-laden]');
   knop.addEventListener('click', function () {
     var f = document.createElement('iframe');
-    f.title = 'Kaart met de locatie van Cycle Service, Handelsweg 11 Sint-Oedenrode';
+    f.title = 'Kaart met de locatie van Cycle Service, Handelsweg 1-A Sint-Oedenrode';
     f.src = vak.dataset.kaart;
     f.setAttribute('referrerpolicy', 'no-referrer-when-downgrade');
     f.setAttribute('allowfullscreen', '');
